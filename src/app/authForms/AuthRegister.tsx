@@ -6,7 +6,18 @@ import { Stack } from "@mui/system";
 import { registerType } from "@/app/(DashboardLayout)/types/auth/auth";
 import AuthSocialButtons from "./AuthSocialButtons";
 
-const AuthRegister = ({ title, subtitle, subtext }: registerType) => (
+const AuthRegister = ({
+    title,
+    subtitle,
+    subtext,
+    name,
+    email,
+    password,
+    setName,
+    setEmail,
+    setPassword,
+    submit
+  }: registerType) => (
   <>
     {title ? (
       <Typography fontWeight="700" variant="h3" mb={1}>
@@ -35,19 +46,20 @@ const AuthRegister = ({ title, subtitle, subtext }: registerType) => (
     <Box>
       <Stack mb={3}>
         <CustomFormLabel htmlFor="name">Name</CustomFormLabel>
-        <CustomTextField id="name" variant="outlined" fullWidth />
+        <CustomTextField id="name" variant="outlined" fullWidth  value={name} onChange={(e:any)=>{setName(e.target.value)}}/>
         <CustomFormLabel htmlFor="email">Email Adddress</CustomFormLabel>
-        <CustomTextField id="email" variant="outlined" fullWidth />
+        <CustomTextField id="email" variant="outlined" fullWidth  value={email} onChange={(e:any)=>{setEmail(e.target.value)}}/>
         <CustomFormLabel htmlFor="password">Password</CustomFormLabel>
-        <CustomTextField id="password" variant="outlined" fullWidth />
+        <CustomTextField id="password" type="password" variant="outlined" fullWidth value={password} onChange={(e:any)=>setPassword(e.target.value)}
+				/>
       </Stack>
       <Button
         color="primary"
         variant="contained"
         size="large"
         fullWidth
-        component={Link}
-        href="/auth/auth1/login"
+        type="submit"
+        onClick={submit}
       >
         Sign Up
       </Button>

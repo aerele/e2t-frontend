@@ -3,11 +3,33 @@ import Link from "next/link";
 import { Grid, Box, Typography, Stack } from "@mui/material";
 import PageContainer from "@/app/components/container/PageContainer";
 import Logo from "@/app/(DashboardLayout)/layout/shared/logo/Logo";
-
+import { useContext, useEffect, useState } from 'react'
 import AuthRegister from "@/app/authForms/AuthRegister";
 import Image from "next/image";
+import { FrappeConfig, FrappeContext, useSWRConfig } from 'frappe-react-sdk'
 
 export default function Register() {
+
+  const [name, setName] = useState('')
+  const [email, setEmail] = useState('')
+	const [password, setPassword] = useState('')
+
+  //FIXME
+	const { mutate } = useSWRConfig()
+  const { call } = useContext(FrappeContext) as FrappeConfig
+  function onSubmit(): void{
+    const signup = {
+      email: email,
+      full_name: name,
+      redirect_to: "/app"
+    };
+    useEffect(() => {{
+      call.post('frappe.core.doctype.user.user.sign_up', {
+          signup
+      })
+    }
+  })
+  }
   return (
   <PageContainer title="Register Page" description="this is Sample page">
     <Grid
@@ -87,7 +109,7 @@ export default function Register() {
                 </Typography>
                 <Typography
                   component={Link}
-                  href="/auth/auth1/login"
+                  href="/login"
                   fontWeight="500"
                   sx={{
                     textDecoration: "none",
@@ -98,6 +120,13 @@ export default function Register() {
                 </Typography>
               </Stack>
             }
+            name={name}
+            email={email}
+            password={password}
+            setName={setName}
+            setEmail={setEmail}
+            setPassword={setPassword}
+            submit={onSubmit}
           />
         </Box>
       </Grid>

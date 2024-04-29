@@ -17,14 +17,15 @@ export default function Login() {
 	  } = useFrappeAuth();
 
 	function onSubmit(): void{
-		debugger
 		login({
 			username:username,
 			password:password
-		  }).then((res) => {
-		    alert(res)
-			console.log(res)
-		  }).catch((err) => {
+		}).then((res) => {
+			  debugger
+			  alert(res)
+			  console.log(res)
+			}).catch((err) => {
+			  debugger
 		    alert(err)
 			console.log(err)
 		  })
@@ -116,7 +117,7 @@ export default function Login() {
 									</Typography>
 									<Typography
 										component={Link}
-										href="/auth/auth1/register"
+										href="/register"
 										fontWeight="500"
 										sx={{
 											textDecoration: "none",
