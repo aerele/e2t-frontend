@@ -9,7 +9,7 @@ import {
   import Link from "next/link";
   import { IconMinus, IconPlus } from "@tabler/icons-react";
   import { useSelector, useDispatch } from "@/store/hooks";
-  import emptyCart from "/public/images/products/empty-shopping-cart.svg";
+  // import emptyCart from "/public/images/products/empty-shopping-cart.svg";
   import {
     increment,
     decrement,
@@ -104,7 +104,7 @@ import {
           </>
         ) : (
           <Box textAlign="center" mb={3}>
-            <Image src={emptyCart} alt="cart" width={200} />
+            {/* <Image src={emptyCart} alt="cart" width={200} /> */}
             <Typography variant="h5" mb={2}>
               Cart is Empty
             </Typography>

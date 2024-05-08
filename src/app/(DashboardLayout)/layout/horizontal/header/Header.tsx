@@ -46,7 +46,7 @@ const Header = () => {
         }}
       >
         <Box sx={{ width: lgDown ? '45px' : 'auto', overflow: 'hidden' }}>
-          <Logo />
+          {/* <Logo /> */}
         </Box>
         {/* ------------------------------------------- */}
         {/* Toggle Button Sidebar */}
@@ -68,16 +68,16 @@ const Header = () => {
         <Search />
          {lgUp ? (
           <>
-            <Navigation />
+            {/* <Navigation /> */}
           </>
         ) : null}
         <Box flexGrow={1} />
         <Stack spacing={1} direction="row" alignItems="center">
-          <Language />
+          {/* <Language /> */}
           {/* ------------------------------------------- */}
           {/* Ecommerce Dropdown */}
           {/* ------------------------------------------- */}
-          <Cart />
+          {/* <Cart /> */}
           <Notifications />
           <Profile />
         </Stack>

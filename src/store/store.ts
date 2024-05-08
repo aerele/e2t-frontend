@@ -2,7 +2,7 @@ import { configureStore } from "@reduxjs/toolkit";
 import { combineReducers } from "redux";
 import { persistReducer, persistStore } from "redux-persist";
 import storage from "redux-persist/lib/storage";
-
+import EcommerceReducer from "./apps/eCommerce/ECommerceSlice";
 import counterReducer from "./counter/counterSlice";
 import CustomizerReducer from "./customizer/CustomizerSlice";
 // import EcommerceReducer from "./apps/eCommerce/ECommerceSlice";
@@ -23,6 +23,7 @@ export const store = configureStore({
   reducer: {
     counter: counterReducer,
     customizer: persistReducer<any>(persistConfig, CustomizerReducer),
+    ecommerceReducer: EcommerceReducer,
     // ecommerceReducer: EcommerceReducer,
     // chatReducer: ChatsReducer,
     // emailReducer: EmailReducer,
@@ -40,6 +41,7 @@ export const store = configureStore({
 const rootReducer = combineReducers({
   counter: counterReducer,
   customizer: CustomizerReducer,
+  ecommerceReducer: EcommerceReducer,
 //   ecommerceReducer: EcommerceReducer,
 //   chatReducer: ChatsReducer,
 //   emailReducer: EmailReducer,
