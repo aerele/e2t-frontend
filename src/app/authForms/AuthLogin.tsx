@@ -95,8 +95,9 @@ const AuthLogin = ({
 				variant="contained"
 				size="large"
 				fullWidth
+				component={Link}
+				href="../home"
 				type="submit"
-				onClick={submit}
 			>
 				Sign In
 			</Button>
