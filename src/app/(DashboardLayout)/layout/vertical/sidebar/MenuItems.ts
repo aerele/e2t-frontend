@@ -85,7 +85,7 @@ const Menuitems: MenuitemsType[] = [
     icon: IconShoppingCart,
     chip: "2",
     chipColor: "secondary",
-    href: "/dashboards/ecommerce",
+    href: "/home",
   },
   {
     id: uniqueId(),

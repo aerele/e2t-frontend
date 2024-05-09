@@ -26,6 +26,8 @@ import CustomCheckbox from '../forms/theme-elements/CustomCheckbox';
 import CustomSwitch from '../forms/theme-elements/CustomSwitch';
 import { IconDotsVertical, IconFilter, IconSearch, IconTrash } from '@tabler/icons-react';
 import { ProductType } from '../../(DashboardLayout)/types/apps/eCommerce';
+import Button from '@mui/material/Button';
+import AddIcon from '@mui/icons-material/Add';
 
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
   if (b[orderBy] < a[orderBy]) {
@@ -197,9 +199,14 @@ const EnhancedTableToolbar = (props: EnhancedTableToolbarProps) => {
             onChange={handleSearch}
             value={search}
           />
+          
         </Box>
       )}
-
+        <Tooltip title="Add Site">
+          <IconButton href='/add-site'>
+            <AddIcon/>
+          </IconButton>
+        </Tooltip>
       {numSelected > 0 ? (
         <Tooltip title="Delete">
           <IconButton>
@@ -213,6 +220,7 @@ const EnhancedTableToolbar = (props: EnhancedTableToolbarProps) => {
           </IconButton>
         </Tooltip>
       )}
+      
     </Toolbar>
   );
 };

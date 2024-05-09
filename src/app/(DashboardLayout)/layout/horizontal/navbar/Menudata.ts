@@ -380,13 +380,13 @@ const Menuitems = [
             id: uniqueId(),
             title: 'Login',
             icon: IconLogin,
-            href: '/auth/auth1/login',
+            href: '/login',
             children: [
               {
                 id: uniqueId(),
                 title: 'Side Login',
                 icon: IconPoint,
-                href: '/auth/auth1/login',
+                href: '/login',
               },
               {
                 id: uniqueId(),
