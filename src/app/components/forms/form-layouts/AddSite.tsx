@@ -16,9 +16,9 @@ const AddSite = () => {
 
   let val: number = 0;
   const data: { [key: string]: number } = {
-    admin: 1,
-    user: 1,
-    guest: 1
+    // admin: 1,
+    // user: 1,
+    // guest: 1
   };
 
   for (const key in data) {
