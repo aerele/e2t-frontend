@@ -27,13 +27,13 @@ const Home: React.FC = () => {
             <PaymentTable />
         </Box>
         <Box sx={{padding:'1rem'}}>
-            <Grid container spacing={2} alignItems="center" item xs={5} sm={15} sx={{ paddingLeft: '1rem', paddingTop: '1rem', width: '100%' }}>
-              <Grid sx={{ paddingTop: '1rem' }}>
-                  <TextField id="outlined-basic" label="Explot Cost" variant="outlined" sx={{ width: '300px' }} />
+            <Grid container spacing={2} alignItems="center" item xs={15} sm={15} sx={{ paddingLeft: '1rem', paddingTop: '1rem', width: '100%' }}>
+              <Grid sx={{ paddingTop: '1rem', marginLeft:'1rem' }}>
+                  <TextField id="outlined-basic" label="Explot Cost" variant="outlined" style={{ width: '150px' }} />
               </Grid>
-              <Grid sx={{ paddingLeft: '37rem', paddingTop: '1rem' }}>
-                <Button variant="contained" color='success'>
-                    <span>Payment</span>
+              <Grid sx={{ marginLeft: '1rem', paddingTop: '1rem' }}>
+                <Button variant="contained" color='success' href='payment-method'>
+                    <span>Proceed To Payment</span>
                     <PaymentIcon sx={{paddingLeft:'0.1rem', fontSize:'small'}} />
                 </Button>
               </Grid>

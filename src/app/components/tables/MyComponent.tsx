@@ -9,7 +9,7 @@ import CustomTextField from '../forms/theme-elements/CustomTextField';
 const MyComponent: React.FC = () => {
   return (
     <Box sx={{ width: '100%' }}>
-      <Grid container spacing={2} alignItems="center" item xs={5} sm={15} sx={{ paddingLeft: '1rem', paddingTop: '1rem', width: '100%' }}>
+      <Grid container spacing={2} alignItems="center" item xs={10} sm={15} sx={{ paddingLeft: '1rem', paddingTop: '1rem' }}>
         <Grid sx={{ paddingLeft: '1rem', paddingTop: '1rem' }}  >
           <FormControl sx={{ width: '120px' }}>
             <InputLabel id="demo-simple-select-label">Site</InputLabel>
@@ -27,7 +27,7 @@ const MyComponent: React.FC = () => {
           </FormControl>
         </Grid>
         <Grid sx={{ paddingLeft: '1rem', paddingTop: '1rem' }}>
-          <FormControl sx={{ width: '120px' }} >
+          <FormControl sx={{ width: '155px' }} >
             <InputLabel id="demo-simple-select-label">Company</InputLabel>
             <Select
               labelId="demo-simple-select-label"
