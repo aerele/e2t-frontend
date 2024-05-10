@@ -3,11 +3,39 @@ import Link from "next/link";
 import { Grid, Box, Typography, Stack } from "@mui/material";
 import PageContainer from "@/app/components/container/PageContainer";
 import Logo from "@/app/(DashboardLayout)/layout/shared/logo/Logo";
-
-import AuthRegister from "../authForms/AuthRegister";
+import { useContext, useEffect, useState } from 'react'
+import AuthRegister from "@/app/authForms/AuthRegister";
 import Image from "next/image";
+import { FrappeConfig, FrappeContext, useSWRConfig } from 'frappe-react-sdk'
 
 export default function Register() {
+
+  const [name, setName] = useState('')
+  const [email, setEmail] = useState('')
+	const [password, setPassword] = useState('')
+  const [isSubmitted, setisSubmiited] = useState(false)
+
+  const { call } = useContext(FrappeContext) as FrappeConfig
+    
+  useEffect(() => {{
+    if (isSubmitted){
+    call.post('e2t_backend.python.authentication.sign_up', {
+      email: email,
+      full_name: name,
+      password: password
+    }).then(res => {
+      if(res && res.message){
+        console.log(res.message)
+      }
+    })
+  }
+  }
+}, [isSubmitted])
+
+  function onSubmit(): void{
+    setisSubmiited(!isSubmitted)
+  }
+
   return (
   <PageContainer title="Register Page" description="this is Sample page">
     <Grid
@@ -98,6 +126,13 @@ export default function Register() {
                 </Typography>
               </Stack>
             }
+            name={name}
+            email={email}
+            password={password}
+            setName={setName}
+            setEmail={setEmail}
+            setPassword={setPassword}
+            submit={onSubmit}
           />
         </Box>
       </Grid>
