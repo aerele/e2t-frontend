@@ -15,7 +15,7 @@ export default function ForgotPassword() {
 	const [email, setEmail] = useState('')
 	const [isButtonClick, setButtonClick] = useState(false)
 
-	const { call } = useFrappePostCall('e2t_backend.api.reset_password')
+	const { call } = useFrappePostCall('frappe.core.doctype.user.user.reset_password')
 
 	useEffect(() => {{
 		if (isButtonClick){
