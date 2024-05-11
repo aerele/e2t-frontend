@@ -1,12 +1,16 @@
 "use client";
-import Link from "next/link";
-import { Grid, Box, Stack, Typography } from "@mui/material";
-import PageContainer from "@/app/components/container/PageContainer";
 import Logo from "@/app/(DashboardLayout)/layout/shared/logo/Logo";
 import AuthLogin from "@/app/authForms/AuthLogin";
-import Image from "next/image";
-import { useState } from "react";
+import PageContainer from "@/app/components/container/PageContainer";
+import { Box, Grid, Stack, Typography } from "@mui/material";
+import { log } from "console";
 import { useFrappeAuth } from "frappe-react-sdk";
+import Image from "next/image";
+import Link from "next/link";
+import { redirect } from 'next/navigation';
+import { useState } from "react";
+import { Toaster, toast } from "sonner";
+
 
 export default function Login() {
 	const [username, setUsername] = useState('')
@@ -17,21 +21,19 @@ export default function Login() {
 	  } = useFrappeAuth();
 
 	function onSubmit(): void{
-		debugger
 		login({
 			username:username,
 			password:password
-		  }).then((res) => {
-		    alert(res)
-			console.log(res)
-		  }).catch((err) => {
-		    alert(err)
-			console.log(err)
+		}).then((res) => {
+			redirect('/')
+		}).catch((err) => {
+			toast.error(err.message)
 		  })
 	}
 
 	return (
-		<PageContainer title="Login Page" description="this is Sample page">
+		<PageContainer title="Login Page" description="">
+			<Toaster richColors></Toaster>
 			<Grid
 				container
 				spacing={0}
