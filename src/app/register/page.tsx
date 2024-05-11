@@ -4,7 +4,7 @@ import { Grid, Box, Typography, Stack } from "@mui/material";
 import PageContainer from "@/app/components/container/PageContainer";
 import Logo from "@/app/(DashboardLayout)/layout/shared/logo/Logo";
 
-import AuthRegister from "../../authForms/AuthRegister";
+import AuthRegister from "@/app/authForms/AuthRegister";
 import Image from "next/image";
 
 export default function Register() {
@@ -87,7 +87,7 @@ export default function Register() {
                 </Typography>
                 <Typography
                   component={Link}
-                  href="/auth/auth1/login"
+                  href="/login"
                   fontWeight="500"
                   sx={{
                     textDecoration: "none",

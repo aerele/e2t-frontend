@@ -94,7 +94,8 @@ const AuthLogin = ({
 				color="primary"
 				variant="contained"
 				size="large"
-				fullWidth
+				fullWidth component={Link}
+				href="/"
 				type="submit"
 				onClick={submit}
 			>
