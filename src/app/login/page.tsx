@@ -116,7 +116,7 @@ export default function Login() {
 									</Typography>
 									<Typography
 										component={Link}
-										href="../register"
+										href="/register"
 										fontWeight="500"
 										sx={{
 											textDecoration: "none",

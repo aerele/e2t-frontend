@@ -86,7 +86,7 @@ export default function Register() {
                 </Typography>
                 <Typography
                   component={Link}
-                  href="../login"
+                  href="/"
                   fontWeight="500"
                   sx={{
                     textDecoration: "none",
