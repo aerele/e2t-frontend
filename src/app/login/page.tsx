@@ -101,7 +101,7 @@ export default function Login() {
 				>
 					<Box p={4}>
 						<AuthLogin
-							title="Welcome to Modernize"
+							title="Welcome to E2T"
 							subtext={
 								<Typography variant="subtitle1" color="textSecondary" mb={1}>
 									Your Admin Dashboard
@@ -114,11 +114,11 @@ export default function Login() {
 										variant="h6"
 										fontWeight="500"
 									>
-										New to Modernize?
+										New to E2T?
 									</Typography>
 									<Typography
 										component={Link}
-										href="/auth/auth1/register"
+										href="/register"
 										fontWeight="500"
 										sx={{
 											textDecoration: "none",

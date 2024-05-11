@@ -16,7 +16,7 @@ const MyApp = ({ children }: { children: React.ReactNode }) => {
 
 	return (
 		<>
-			<FrappeProvider url='<frappe-site-url>' socketPort="<port-no>">
+			<FrappeProvider url= {"http://localhost:8011"} socketPort= {9011}>
 				<AppRouterCacheProvider options={{ enableCssLayer: true }}>
 					<ThemeProvider theme={theme}>
 						<RTL direction={customizer.activeDir}>
