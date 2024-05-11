@@ -3,18 +3,18 @@ import Logo from "@/app/(DashboardLayout)/layout/shared/logo/Logo";
 import AuthLogin from "@/app/authForms/AuthLogin";
 import PageContainer from "@/app/components/container/PageContainer";
 import { Box, Grid, Stack, Typography } from "@mui/material";
-import { log } from "console";
 import { useFrappeAuth } from "frappe-react-sdk";
 import Image from "next/image";
 import Link from "next/link";
 import { redirect } from 'next/navigation';
 import { useState } from "react";
 import { Toaster, toast } from "sonner";
-
+import {useRouter} from 'next/navigation'
 
 export default function Login() {
 	const [username, setUsername] = useState('')
 	const [password, setPassword] = useState('')
+	const router = useRouter()
 
 	const {
 		login
@@ -24,10 +24,14 @@ export default function Login() {
 		login({
 			username:username,
 			password:password
-		}).then((res) => {
-			redirect('/')
-		}).catch((err) => {
-			toast.error(err.message)
+		  }).then((res) => {
+		    alert(res)
+			console.log(res)
+			router.push('/')
+
+		  }).catch((err) => {
+		    alert(err)
+			console.log(err)
 		  })
 	}
 

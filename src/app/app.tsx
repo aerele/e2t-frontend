@@ -13,6 +13,8 @@ import { FrappeProvider } from "frappe-react-sdk";
 const MyApp = ({ children }: { children: React.ReactNode }) => {
 	const theme = ThemeSettings();
 	const customizer = useSelector((state: AppState) => state.customizer);
+	console.log(process.env);
+	
 
 	return (
 		<>
