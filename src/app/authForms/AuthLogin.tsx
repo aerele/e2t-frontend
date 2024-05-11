@@ -96,7 +96,7 @@ const AuthLogin = ({
 				size="large"
 				fullWidth
 				component={Link}
-				href="../home"
+				href="/"
 				type="submit"
 			>
 				Sign In
