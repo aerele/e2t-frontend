@@ -7,10 +7,12 @@ import AuthLogin from "@/app/authForms/AuthLogin";
 import Image from "next/image";
 import { useState } from "react";
 import { useFrappeAuth } from "frappe-react-sdk";
+import {useRouter} from 'next/navigation'
 
 export default function Login() {
 	const [username, setUsername] = useState('')
 	const [password, setPassword] = useState('')
+	const router = useRouter()
 
 	const {
 		login
@@ -24,6 +26,8 @@ export default function Login() {
 		  }).then((res) => {
 		    alert(res)
 			console.log(res)
+			router.push('/')
+
 		  }).catch((err) => {
 		    alert(err)
 			console.log(err)
