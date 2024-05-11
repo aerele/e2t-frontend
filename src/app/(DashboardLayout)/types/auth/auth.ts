@@ -15,6 +15,20 @@ export interface loginType {
   submit: Function
 }
 
+export interface forgotPassword {
+  email?: string;
+  submit: Function,
+  setEmail: Function
+}
+
+export interface resetPassword {
+  new_password?: string;
+  confirm_password?: string;
+  setNewPassword: Function,
+  setConfirmPassword: Function,
+  submit: Function,
+}
+
 export interface signInType {
   title?: string;
 }

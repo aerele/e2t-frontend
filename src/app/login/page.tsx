@@ -17,15 +17,15 @@ export default function Login() {
 	  } = useFrappeAuth();
 
 	function onSubmit(): void{
-		debugger
+		// debugger
 		login({
 			username:username,
 			password:password
 		  }).then((res) => {
-		    alert(res)
+			alert(res)
 			console.log(res)
 		  }).catch((err) => {
-		    alert(err)
+			alert(err)
 			console.log(err)
 		  })
 	}
