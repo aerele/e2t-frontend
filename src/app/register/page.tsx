@@ -7,6 +7,7 @@ import { useContext, useEffect, useState } from 'react'
 import AuthRegister from "@/app/authForms/AuthRegister";
 import Image from "next/image";
 import { FrappeConfig, FrappeContext, useSWRConfig } from 'frappe-react-sdk'
+import { Toaster, toast } from "sonner"
 
 export default function Register() {
 
@@ -23,11 +24,19 @@ export default function Register() {
       email: email,
       full_name: name,
       password: password
-    }).then(res => {
+    }).then((res) => {
       if(res && res.message){
         console.log(res.message)
+        if (res.message.success){
+          toast.success(res.message.msg)
+        }
+        else{
+          toast.error(res.message.msg)
+        }
       }
-    })
+    }).catch((e) => {
+      toast.error(e.message._server_messages)
+  })
   }
   }
 }, [isSubmitted])
@@ -38,6 +47,7 @@ export default function Register() {
 
   return (
   <PageContainer title="Register Page" description="this is Sample page">
+    <Toaster richColors></Toaster>
     <Grid
       container
       spacing={0}
