@@ -6,43 +6,52 @@ import Logo from "@/app/(DashboardLayout)/layout/shared/logo/Logo";
 import { useContext, useEffect, useState } from 'react'
 import AuthRegister from "@/app/authForms/AuthRegister";
 import Image from "next/image";
-import { FrappeConfig, FrappeContext, useSWRConfig } from 'frappe-react-sdk'
+import { useFrappePostCall } from 'frappe-react-sdk'
 import { Toaster, toast } from "sonner"
+import { redirect } from "next/navigation"
 
 export default function Register() {
 
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
 	const [password, setPassword] = useState('')
-  const [isSubmitted, setisSubmiited] = useState(false)
-
-  const { call } = useContext(FrappeContext) as FrappeConfig
+  const [isSubmitted, setisSubmitted] = useState(false)
+  const { call: signup } = useFrappePostCall('e2t_backend.python.authentication.sign_up')
     
   useEffect(() => {{
     if (isSubmitted){
-    call.post('e2t_backend.python.authentication.sign_up', {
+    signup({
       email: email,
       full_name: name,
       password: password
     }).then((res) => {
       if(res && res.message){
-        console.log(res.message)
-        if (res.message.success){
+        if (res.message.status){
           toast.success(res.message.msg)
+          setisSubmitted(!isSubmitted)
+          redirect('/login')
         }
         else{
           toast.error(res.message.msg)
+          setisSubmitted(!isSubmitted)
         }
       }
     }).catch((e) => {
-      toast.error(e.message._server_messages)
+      if (e.hasOwnProperty('_server_messages')){
+        const serverMessages = JSON.parse(e._server_messages);
+        if (serverMessages){
+          const serverErrorMessage=JSON.parse(serverMessages);
+          toast.error(serverErrorMessage.message)
+          setisSubmitted(!isSubmitted)
+        }
+      }
   })
   }
   }
 }, [isSubmitted])
 
   function onSubmit(): void{
-    setisSubmiited(!isSubmitted)
+    setisSubmitted(!isSubmitted)
   }
 
   return (
