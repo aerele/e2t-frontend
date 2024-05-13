@@ -13,10 +13,12 @@ import { FrappeProvider } from "frappe-react-sdk";
 const MyApp = ({ children }: { children: React.ReactNode }) => {
 	const theme = ThemeSettings();
 	const customizer = useSelector((state: AppState) => state.customizer);
+	console.log(process.env);
+	
 
 	return (
 		<>
-			<FrappeProvider url='http://127.0.0.1:8001' socketPort="9001">
+			<FrappeProvider url= {"http://localhost:8011"} socketPort= {9011}>
 				<AppRouterCacheProvider options={{ enableCssLayer: true }}>
 					<ThemeProvider theme={theme}>
 						<RTL direction={customizer.activeDir}>

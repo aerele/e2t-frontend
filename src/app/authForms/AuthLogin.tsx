@@ -96,7 +96,7 @@ const AuthLogin = ({
 				size="large"
 				fullWidth
 				type="submit"
-				onClick={submit}
+				onClick = {submit}
 			>
 				Sign In
 			</Button>
