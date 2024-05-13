@@ -2,7 +2,7 @@
 import React from 'react';
 import Sidebar from "@/app/(DashboardLayout)/layout/vertical/sidebar/Sidebar";
 import Header from "@/app/(DashboardLayout)/layout/horizontal/header/Header";
-import Table from "@/app/(DashboardLayout)/tables/search/page";
+import Table from "../(DashboardLayout)/connected_site/page"
 import { useFrappePostCall } from 'frappe-react-sdk'
 import {useEffect} from 'react'
 

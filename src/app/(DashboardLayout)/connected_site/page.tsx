@@ -10,7 +10,7 @@ const BCrumb = [
     title: 'Home',
   },
   {
-    title: 'Search Table',
+    title: 'E2T',
   },
 ];
 

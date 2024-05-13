@@ -67,25 +67,25 @@ import {
 } from "@tabler/icons-react";
 
 const Menuitems: MenuitemsType[] = [
-  {
-    navlabel: true,
-    subheader: "Home",
-  },
+  // {
+  //   navlabel: true,
+  //   subheader: "Home",
+  // },
 
-  {
-    id: uniqueId(),
-    title: "Home",
-    icon: IconAperture,
-    href: "/home",
-    chipColor: "secondary",
-  },
+  // {
+  //   id: uniqueId(),
+  //   title: "Home",
+  //   icon: IconAperture,
+  //   href: "/home",
+  //   chipColor: "secondary",
+  // },
   {
     id: uniqueId(),
     title: "Connected Sites",
     icon: IconShoppingCart,
     chip: "2",
     chipColor: "secondary",
-    href: "/tables/search",
+    href: "/connected_site",
   },
   {
     id: uniqueId(),

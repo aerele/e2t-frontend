@@ -90,12 +90,12 @@ const headCells: readonly HeadCell[] = [
     disablePadding: false,
     label: 'Status',
   },
-  {
-    id: 'price',
-    numeric: false,
-    disablePadding: false,
-    label: 'Permissions',
-  },
+  // {
+  //   id: 'price',
+  //   numeric: false,
+  //   disablePadding: false,
+  //   label: 'Permissions',
+  // },
   {
     id: 'action',
     numeric: false,

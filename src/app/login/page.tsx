@@ -26,7 +26,7 @@ export default function Login() {
 		  }).then((res) => {
 		    alert(res)
 			console.log(res)
-			router.push('/')
+			router.push('/connected_site')
 
 		  }).catch((err) => {
 		    alert(err)
