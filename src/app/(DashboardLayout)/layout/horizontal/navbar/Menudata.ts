@@ -23,7 +23,7 @@ const Menuitems = [
     children: [
       {
         id: uniqueId(),
-        title: 'Modern',
+        title: 'login',
         icon: IconPoint,
         href: '/',
         chip: 'New',
