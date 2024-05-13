@@ -11,6 +11,7 @@
 	"dependencies": {
 		"@emotion/react": "^11.11.4",
 		"@emotion/styled": "^11.11.5",
+		"@ionic/react": "^8.1.1",
 		"@mui/icons-material": "^5.14.13",
 		"@mui/lab": "^5.0.0-alpha.148",
 		"@mui/material": "^5.15.17",
@@ -38,6 +39,7 @@
 		"simplebar": "^6.2.6",
 		"simplebar-react": "^3.2.5",
 		"slick-carousel": "^1.8.1",
+		"sonner": "^1.4.41",
 		"styled-components": "^6.1.11",
 		"stylis-plugin-rtl": "^2.1.1"
 	},

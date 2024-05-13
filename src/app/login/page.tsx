@@ -19,7 +19,6 @@ export default function Login() {
 	  } = useFrappeAuth();
 
 	function onSubmit(): void{
-		debugger
 		login({
 			username:username,
 			password:password
