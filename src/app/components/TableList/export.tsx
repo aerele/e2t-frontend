@@ -26,6 +26,8 @@ import CustomCheckbox from '../forms/theme-elements/CustomCheckbox';
 import CustomSwitch from '../forms/theme-elements/CustomSwitch';
 import { IconDotsVertical, IconFilter, IconSearch, IconTrash } from '@tabler/icons-react';
 import { ProductType } from '../../(DashboardLayout)/types/apps/eCommerce';
+import { Button } from '@mui/material';
+import Link from 'next/link';
 
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
   if (b[orderBy] < a[orderBy]) {
@@ -75,32 +77,38 @@ const headCells: readonly HeadCell[] = [
     id: 'name',
     numeric: false,
     disablePadding: false,
-    label: 'URL',
+    label: 'S.No',
   },
   {
-    id: 'pname',
+    id: 'name',
     numeric: false,
     disablePadding: false,
-    label: 'User',
+    label: 'Site',
+  },
+  {
+    id: 'from',
+    numeric: false,
+    disablePadding: false,
+    label: 'From',
   },
 
+  {
+    id: 'to',
+    numeric: false,
+    disablePadding: false,
+    label: 'To',
+  },
+  {
+    id: 'company',
+    numeric: false,
+    disablePadding: false,
+    label: 'Company',
+  },
   {
     id: 'status',
     numeric: false,
     disablePadding: false,
     label: 'Status',
-  },
-  {
-    id: 'price',
-    numeric: false,
-    disablePadding: false,
-    label: 'Permissions',
-  },
-  {
-    id: 'action',
-    numeric: false,
-    disablePadding: false,
-    label: 'Action',
   },
 ];
 
@@ -207,11 +215,23 @@ const EnhancedTableToolbar = (props: EnhancedTableToolbarProps) => {
           </IconButton>
         </Tooltip>
       ) : (
-        <Tooltip title="Filter list">
-          <IconButton>
-            <IconFilter size="1.2rem" />
-          </IconButton>
-        </Tooltip>
+        <Box display="grid" gridTemplateColumns="auto auto">
+            <Tooltip title="Filter list">
+                <IconButton>
+                    <IconFilter size="1.2rem" />
+                </IconButton>
+            </Tooltip>
+            <Button
+                 variant="contained"
+                 color="primary"
+                 sx={{
+                     color: 'white', // Set font color to white
+                 }}
+            >
+            <Link href={'/export/new'}>Export
+            </Link>
+            </Button>
+        </Box>
       )}
     </Toolbar>
   );
@@ -316,8 +336,9 @@ const ProductTableList = () => {
           numSelected={selected.length}
           search={search}
           handleSearch={(event: any) => handleSearch(event)}
-        />
-       <Paper variant="outlined" sx={{ mx: 2, mt: 1, border: `1px solid ${borderColor}`, boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)' }}>
+          />
+        {/* <Paper variant="outlined" sx={{ mx: 2, mt: 1, border: `1px solid ${borderColor}` }}> */}
+        <Paper variant="outlined" sx={{ mx: 2, mt: 1, border: `1px solid ${borderColor}`, boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)' }}>    
           <TableContainer>
             <Table
               sx={{ minWidth: 750 }}

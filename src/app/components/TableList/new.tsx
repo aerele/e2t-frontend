@@ -26,6 +26,8 @@ import CustomCheckbox from '../forms/theme-elements/CustomCheckbox';
 import CustomSwitch from '../forms/theme-elements/CustomSwitch';
 import { IconDotsVertical, IconFilter, IconSearch, IconTrash } from '@tabler/icons-react';
 import { ProductType } from '../../(DashboardLayout)/types/apps/eCommerce';
+import { Button } from '@mui/material';
+import { Label } from '@mui/icons-material';
 
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
   if (b[orderBy] < a[orderBy]) {
@@ -71,36 +73,23 @@ interface HeadCell {
 }
 
 const headCells: readonly HeadCell[] = [
+    {
+        id: 'pname',
+        numeric: false,
+        disablePadding: false,
+        label: 'S.No',
+      },     
   {
     id: 'name',
     numeric: false,
     disablePadding: false,
-    label: 'URL',
+    label: 'Voucher Type',
   },
   {
     id: 'pname',
     numeric: false,
     disablePadding: false,
-    label: 'User',
-  },
-
-  {
-    id: 'status',
-    numeric: false,
-    disablePadding: false,
-    label: 'Status',
-  },
-  {
-    id: 'price',
-    numeric: false,
-    disablePadding: false,
-    label: 'Permissions',
-  },
-  {
-    id: 'action',
-    numeric: false,
-    disablePadding: false,
-    label: 'Action',
+    label: 'Count',
   },
 ];
 
@@ -312,11 +301,45 @@ const ProductTableList = () => {
   return (
     <Box>
       <Box>
-        <EnhancedTableToolbar
+        {/* <EnhancedTableToolbar
           numSelected={selected.length}
           search={search}
-          handleSearch={(event: any) => handleSearch(event)}
-        />
+          handleSearch={(event: any) => 
+            handleSearch(event)}
+        /> */}
+         <Paper variant="outlined" sx={{ mx: 2, mt: 1, border: `1px solid ${borderColor}`, boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)' }}>
+            <TableContainer>
+                <Table  sx={{ minWidth: 750 }}
+                    aria-labelledby="tableTitle"
+                    size={dense ? 'small' : 'medium'}>
+                    <TableRow>
+                        <TableCell>
+                            {/* convert to select field */}
+                            <TextField label="Site" variant="outlined" />
+                        </TableCell>
+                        <TableCell>
+                            {/* convert to select field */}
+                            <TextField label="Company" variant="outlined" />
+                        </TableCell>
+                        <TableCell>
+                            {/* convert to year selection field*/}
+                            <TextField label="Fiscal Year" variant="outlined" />
+                        </TableCell>
+                        <TableCell>
+                            {/* convert to select date */}
+                            <TextField label="From Date" variant="outlined" />
+                        </TableCell>
+                        <TableCell>
+                            {/* convert to select field */}
+                            <TextField label="To Date" variant="outlined" />
+                        </TableCell>
+                        <TableCell>
+                            <Button variant="contained" color="primary">Fetch</Button>
+                        </TableCell>
+                    </TableRow>        
+                </Table>
+            </TableContainer>
+            </Paper>    
        <Paper variant="outlined" sx={{ mx: 2, mt: 1, border: `1px solid ${borderColor}`, boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)' }}>
           <TableContainer>
             <Table
@@ -447,6 +470,28 @@ const ProductTableList = () => {
             label="Dense padding"
           />
         </Box> */}
+        <Paper variant="outlined" sx={{ mx: 2, mt: 1, border: `1px solid ${borderColor}`, boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)' }}>
+            <TableContainer>
+                <Table  sx={{ minWidth: 750 }}
+                    aria-labelledby="tableTitle"
+                    size={dense ? 'small' : 'medium'}>
+                    <TableRow>
+                        <TableCell>
+                            <Box display="grid" gridTemplateColumns="auto 1fr" alignItems="center">
+                                <Typography variant="body1" sx={{ mt: 0.2,ml:4,mr:4 }}>Explicit Cost</Typography>
+                                {/* Convert to select field */}
+                                <TextField variant="outlined"sx={{ width: '50%' }} />
+                            </Box>
+                        </TableCell>
+                        <TableCell>
+                            <Box display="flex" justifyContent="flex-end">
+                                <Button variant="contained" color="primary">Proceed To Payment</Button>
+                            </Box>
+                        </TableCell>
+                    </TableRow>      
+                </Table>
+            </TableContainer>
+            </Paper>    
       </Box>
     </Box>
   );
