@@ -85,7 +85,7 @@ const Menuitems: MenuitemsType[] = [
     icon: IconShoppingCart,
     chip: "2",
     chipColor: "secondary",
-    href: "/dashboards/ecommerce",
+    href: "/home",
   },
   {
     id: uniqueId(),
@@ -98,21 +98,21 @@ const Menuitems: MenuitemsType[] = [
     id: uniqueId(),
     title: "Invoices",
     icon: IconChartDonut3,
-    href: "/apps/blog/",
-    children: [
-      {
-        id: uniqueId(),
-        title: "Posts",
-        icon: IconPoint,
-        href: "/apps/blog/post",
-      },
-      {
-        id: uniqueId(),
-        title: "Detail",
-        icon: IconPoint,
-        href: "/apps/blog/detail/streaming-video-way-before-it-was-cool-go-dark-tomorrow",
-      },
-    ],
+    href: "/payment-page",
+    // children: [
+    //   {
+    //     id: uniqueId(),
+    //     title: "Posts",
+    //     icon: IconPoint,
+    //     href: "/apps/blog/post",
+    //   },
+    //   {
+    //     id: uniqueId(),
+    //     title: "Detail",
+    //     icon: IconPoint,
+    //     href: "/apps/blog/detail/streaming-video-way-before-it-was-cool-go-dark-tomorrow",
+    //   },
+    // ],
   },
   {
     id: uniqueId(),

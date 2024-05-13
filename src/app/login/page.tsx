@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import { Grid, Box, Stack, Typography } from "@mui/material";
+import { Grid, Box, Stack, Typography, Alert, Button } from "@mui/material";
 import PageContainer from "@/app/components/container/PageContainer";
 import Logo from "@/app/(DashboardLayout)/layout/shared/logo/Logo";
 import AuthLogin from "@/app/authForms/AuthLogin";
@@ -12,7 +12,7 @@ import {useRouter} from 'next/navigation'
 export default function Login() {
 	const [username, setUsername] = useState('')
 	const [password, setPassword] = useState('')
-	const router = useRouter()
+	const [showAlert, setShowAlert] = useState(false);
 
 	const {
 		login
@@ -24,12 +24,9 @@ export default function Login() {
 			username:username,
 			password:password
 		  }).then((res) => {
-		    alert(res)
-			console.log(res)
-			router.push('/')
-
+		    window.location.href = '/home'
 		  }).catch((err) => {
-		    alert(err)
+			setShowAlert(true)
 			console.log(err)
 		  })
 	}
@@ -137,8 +134,24 @@ export default function Login() {
 							setPassword={setPassword}
 							submit={onSubmit}
 						/>
+						{
+							showAlert ? 
+							<Alert
+								variant="filled"
+								severity="info"
+								color="error"
+
+								action={
+									<Button color="inherit" size="small" onChange={() => setShowAlert(false)}>
+									X
+									</Button>
+								}
+								>
+								Username or Password may be Incorrcet
+							</Alert> : <></>
+						}
 					</Box>
-				</Grid>
+				</Grid>	
 			</Grid>
 		</PageContainer>
 	);

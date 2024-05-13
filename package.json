@@ -9,16 +9,19 @@
 		"lint": "next lint"
 	},
 	"dependencies": {
+		"@emotion/react": "^11.11.4",
+		"@emotion/styled": "^11.11.5",
 		"@mui/icons-material": "^5.14.13",
 		"@mui/lab": "^5.0.0-alpha.148",
-		"@mui/material": "^5.14.13",
+		"@mui/material": "^5.15.17",
 		"@mui/material-nextjs": "^5.15.11",
 		"@mui/styled-engine-sc": "^6.0.0-alpha.1",
-		"@mui/x-date-pickers": "^5.0.15",
+		"@mui/x-date-pickers": "^5.0.20",
 		"@mui/x-tree-view": "^6.17.0",
 		"@reduxjs/toolkit": "^1.9.7",
 		"@tabler/icons-react": "^3.3.0",
 		"date-fns": "^2.30.0",
+		"dayjs": "^1.11.11",
 		"frappe-react-sdk": "^1.6.0",
 		"i18next": "^23.5.1",
 		"lodash": "^4.17.21",
@@ -32,6 +35,7 @@
 		"simplebar": "^6.2.6",
 		"simplebar-react": "^3.2.5",
 		"slick-carousel": "^1.8.1",
+		"styled-components": "^6.1.11",
 		"stylis-plugin-rtl": "^2.1.1"
 	},
 	"devDependencies": {
