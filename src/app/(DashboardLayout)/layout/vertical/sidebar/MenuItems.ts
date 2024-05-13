@@ -71,14 +71,6 @@ const Menuitems: MenuitemsType[] = [
     navlabel: true,
     subheader: "Home",
   },
-
-  {
-    id: uniqueId(),
-    title: "Home",
-    icon: IconAperture,
-    href: "/",
-    chipColor: "secondary",
-  },
   {
     id: uniqueId(),
     title: "Connected Sites",
@@ -119,32 +111,32 @@ const Menuitems: MenuitemsType[] = [
     title: "Support",
     icon: IconBasket,
     href: "/apps/ecommerce/",
-    children: [
-      {
-        id: uniqueId(),
-        title: "Shop",
-        icon: IconPoint,
-        href: "/apps/ecommerce/shop",
-      },
-      {
-        id: uniqueId(),
-        title: "Detail",
-        icon: IconPoint,
-        href: "/apps/ecommerce/detail/1",
-      },
-      {
-        id: uniqueId(),
-        title: "List",
-        icon: IconPoint,
-        href: "/apps/ecommerce/list",
-      },
-      {
-        id: uniqueId(),
-        title: "Checkout",
-        icon: IconPoint,
-        href: "/apps/ecommerce/checkout",
-      },
-    ],
+    // children: [
+    //   {
+    //     id: uniqueId(),
+    //     title: "Shop",
+    //     icon: IconPoint,
+    //     href: "/apps/ecommerce/shop",
+    //   },
+    //   {
+    //     id: uniqueId(),
+    //     title: "Detail",
+    //     icon: IconPoint,
+    //     href: "/apps/ecommerce/detail/1",
+    //   },
+    //   {
+    //     id: uniqueId(),
+    //     title: "List",
+    //     icon: IconPoint,
+    //     href: "/apps/ecommerce/list",
+    //   },
+    //   {
+    //     id: uniqueId(),
+    //     title: "Checkout",
+    //     icon: IconPoint,
+    //     href: "/apps/ecommerce/checkout",
+    //   },
+    // ],
   },
   {
     id: uniqueId(),
