@@ -26,6 +26,8 @@ import CustomCheckbox from '../forms/theme-elements/CustomCheckbox';
 import CustomSwitch from '../forms/theme-elements/CustomSwitch';
 import { IconDotsVertical, IconFilter, IconSearch, IconTrash } from '@tabler/icons-react';
 import { ProductType } from '../../(DashboardLayout)/types/apps/eCommerce';
+import { useFrappeGetCall } from 'frappe-react-sdk';
+
 
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
   if (b[orderBy] < a[orderBy]) {
@@ -226,6 +228,17 @@ const ProductTableList = () => {
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
   const dispatch = useDispatch();
+
+ 
+
+  const { data } = useFrappeGetCall('frappe.client.get_list', {
+  doctype: "Site Details",
+  // filters: JSON.stringify({ channel_id: channelID, user_id: currentUser }),
+  fields: ["name", "url", "username"]
+});
+console.log(data, "Data");
+
+
 
   //Fetch Products
   React.useEffect(() => {
