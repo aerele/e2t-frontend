@@ -76,7 +76,7 @@ const Menuitems: MenuitemsType[] = [
     id: uniqueId(),
     title: "Home",
     icon: IconAperture,
-    href: "/",
+    href: "/home",
     chipColor: "secondary",
   },
   {
@@ -85,13 +85,13 @@ const Menuitems: MenuitemsType[] = [
     icon: IconShoppingCart,
     chip: "2",
     chipColor: "secondary",
-    href: "/dashboards/ecommerce",
+    href: "/tables/search",
   },
   {
     id: uniqueId(),
     title: "Export to Tally",
     icon: IconPackage,
-    href: "/apps/contacts",
+    href: "/export",
   },
 
   {

@@ -16,7 +16,7 @@ const MyApp = ({ children }: { children: React.ReactNode }) => {
 
 	return (
 		<>
-			<FrappeProvider url='' socketPort="">
+			<FrappeProvider url='http://e2t.site:8000/app/home' socketPort="9000">
 				<AppRouterCacheProvider options={{ enableCssLayer: true }}>
 					<ThemeProvider theme={theme}>
 						<RTL direction={customizer.activeDir}>
