@@ -18,9 +18,9 @@ export default function Landingpage () {
       <LpHeader />
       <Banner />
       {/* <Frameworks /> */}
-      {/* <Testimonial /> */}
-      {/* <Features /> */}
-      {/* <C2a /> */}
+      <Testimonial />
+      <Features />
+      <C2a />
       <Footer />
     </PageContainer>
   );
