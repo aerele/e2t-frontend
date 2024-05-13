@@ -1,30 +1,29 @@
-// "use client";
-// import React from 'react';
-// import Sidebar from "@/app/(DashboardLayout)/layout/vertical/sidebar/Sidebar";
-// import Header from "@/app/(DashboardLayout)/layout/horizontal/header/Header";
-// import Table from "@/app/(DashboardLayout)/tables/search/page";
-// import { useFrappePostCall } from 'frappe-react-sdk'
-// import {useEffect} from 'react'
+"use client"
 
-// export default function Dashboard(){  
-//   const m = document.cookie.split(";").find((p) => p.trim().startsWith("user_id="));
-//   const { call } = useFrappePostCall("frappe.desk.page.setup_wizard.setup_wizard.load_user_details")
-//   useEffect(() => {
-//     get_data()
-//   },[])
+import React from 'react';
+import PageContainer from '@/app/components/container/PageContainer';
 
-//   const get_data = () => {
-//     call({}).then((res) => console.log(res)).catch((err) => console.log(err))
-//   }
-//   console.log("cookie",m);
-  
-//   return (
-//     <div style={{ display: 'flex', height: '100vh' }}>
-//       {/* <Sidebar /> */}
-//       <div style={{ flex: 1, overflowY: 'auto', paddingLeft: '2px' }}>
-//         <Header />
-//         <Table />
-//       </div>
-//     </div>
-//   );
-// };
+// components
+import Banner from '@/app/components/landingpage/banner/Banner';
+import C2a from '@/app/components/landingpage/c2a/C2a';
+import Features from '@/app/components/landingpage/features/Features';
+import Footer from '@/app/components/landingpage/footer/Footer';
+import Frameworks from '@/app/components/landingpage/frameworks/Frameworks';
+import LpHeader from '@/app/components/landingpage/header/Header';
+import Testimonial from '@/app/components/landingpage/testimonial/Testimonial';
+
+export default function Landingpage () {
+  return (
+    <PageContainer title="Landingpage" description="this is Landingpage">
+      <LpHeader />
+      <Banner />
+      {/* <Frameworks /> */}
+      {/* <Testimonial /> */}
+      {/* <Features /> */}
+      {/* <C2a /> */}
+      <Footer />
+    </PageContainer>
+  );
+};
+
+Landingpage.layout = "Blank";
