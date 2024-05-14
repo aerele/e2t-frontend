@@ -1,5 +1,4 @@
 import { Box, Typography, Button, Divider } from "@mui/material";
-import Link from "next/link";
 import CustomTextField from "@/app/components/forms/theme-elements/CustomTextField";
 import CustomFormLabel from "@/app/components/forms/theme-elements/CustomFormLabel";
 import { Stack } from "@mui/system";
@@ -14,9 +13,11 @@ const AuthRegister = (
     name,
     email,
     password,
+    confirmPassword,
     setName,
     setEmail,
     setPassword,
+    setConfirmPassword,
     submit
   }: registerType) => (
   <>
@@ -51,8 +52,9 @@ const AuthRegister = (
         <CustomFormLabel htmlFor="email">Email Adddress</CustomFormLabel>
         <CustomTextField id="email" variant="outlined" fullWidth  value={email} onChange={(e:any)=>{setEmail(e.target.value)}}/>
         <CustomFormLabel htmlFor="password">Password</CustomFormLabel>
-        <CustomTextField id="password" type="password" variant="outlined" fullWidth value={password} onChange={(e:any)=>setPassword(e.target.value)}
-				/>
+        <CustomTextField id="password" type="password" variant="outlined" fullWidth value={password} onChange={(e:any)=>setPassword(e.target.value)}/>
+        <CustomFormLabel htmlFor="confirmPassword">Confirm Password</CustomFormLabel>
+        <CustomTextField id="confirmPassword" type="password" variant="outlined" fullWidth value={confirmPassword} onChange={(e:any)=>setConfirmPassword(e.target.value)}/>
       </Stack>
       <Button
         color="primary"
