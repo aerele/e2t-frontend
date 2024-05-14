@@ -13,6 +13,7 @@ export default function Login() {
 	const [username, setUsername] = useState('')
 	const [password, setPassword] = useState('')
 	const [showAlert, setShowAlert] = useState(false);
+	const router = useRouter();
 
 	const {
 		login
@@ -23,7 +24,7 @@ export default function Login() {
 			username:username,
 			password:password
 		  }).then((res) => {
-		    window.location.href = '/home'
+		   router.push('/home')
 		  }).catch((err) => {
 			setShowAlert(true)
 			console.log(err)
