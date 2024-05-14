@@ -8,7 +8,7 @@ import AuthRegister from "@/app/authForms/AuthRegister";
 import Image from "next/image";
 import { useFrappePostCall } from 'frappe-react-sdk'
 import { Toaster, toast } from "sonner"
-import { redirect } from "next/navigation"
+import { useRouter } from "next/navigation"
 
 export default function Register() {
 
@@ -16,8 +16,8 @@ export default function Register() {
   const [email, setEmail] = useState('')
 	const [password, setPassword] = useState('')
   const [isSubmitted, setisSubmitted] = useState(false)
-  const { call: signup } = useFrappePostCall('e2t_backend.python.authentication.sign_up')
-    
+  const { call: signup } = useFrappePostCall('e2t_backend.authentication.authenticate.sign_up')
+  const router = useRouter();  
   useEffect(() => {{
     if (isSubmitted){
     signup({
@@ -29,7 +29,7 @@ export default function Register() {
         if (res.message.status){
           toast.success(res.message.msg)
           setisSubmitted(!isSubmitted)
-          redirect('/login')
+          router.push('/login')
         }
         else{
           toast.error(res.message.msg)

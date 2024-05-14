@@ -16,19 +16,21 @@ export default function Login() {
 	const [password, setPassword] = useState('');
 	const [showAlert, setShowAlert] = useState(false);
 	const [loginDialog, setLoginDialog] = useState(false);
+	const router = useRouter();
 
 	const { login } = useFrappeAuth();
 
-	function onSubmit() {
-		login({ username, password })
-			.then(() => {
-				setLoginDialog(true);
-				window.location.href = '/home';
-			})
-			.catch((err) => {
-				setShowAlert(true);
-				console.log(err);
-			});
+	function onSubmit(): void{
+		login({
+			username:username,
+			password:password
+		  }).then((res) => {
+			setLoginDialog(true);
+		   router.push('/home')
+		  }).catch((err) => {
+			setShowAlert(true)
+			console.log(err)
+		  })
 	}
 
 	const action = (
