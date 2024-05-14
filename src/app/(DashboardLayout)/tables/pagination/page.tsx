@@ -6,8 +6,6 @@ import { useTheme } from '@mui/material/styles';
 import {
   Typography,
   TableHead,
-  Avatar,
-  Chip,
   Box,
   Table,
   TableBody,
@@ -24,13 +22,10 @@ import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
 import LastPageIcon from '@mui/icons-material/LastPage';
 
-// import Breadcrumb from '@/app/(DashboardLayout)/layout/shared/breadcrumb/Breadcrumb';
 import PageContainer from '@/app/components/container/PageContainer';
 
 import ParentCard from '@/app/components/shared/ParentCard';
-import { Stack } from '@mui/system';
 import BlankCard from '@/app/components/shared/BlankCard';
-import { IconDownload } from '@tabler/icons-react';
 
 interface TablePaginationActionsProps {
   count: number;
@@ -173,16 +168,6 @@ const rows = [
   },
 ].sort((a, b) => (a.customer < b.customer ? -1 : 1));
 
-const BCrumb = [
-  {
-    to: '/',
-    title: 'Home',
-  },
-  {
-    title: 'Pagination Table',
-  },
-];
-
 const PaginationTable = () => {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
@@ -200,11 +185,8 @@ const PaginationTable = () => {
   };
 
   return (
-    <PageContainer title="Vouchers" description="this is Pagination Table">
-      {/* breadcrumb */}
-      {/* <Breadcrumb title="Pagination Table" items={BCrumb} /> */}
-      {/* end breadcrumb */}
-      <ParentCard title="Vouchers">
+    <PageContainer title="Export to Tally" description="this is Pagination Table">
+      <ParentCard title="Export to Tally">
         <BlankCard>
           <TableContainer>
             <Table
@@ -221,15 +203,6 @@ const PaginationTable = () => {
                   <TableCell>
                     <Typography variant="h6">Count</Typography>
                   </TableCell>
-                  <TableCell>
-                    <Typography variant="h6">Date</Typography>
-                  </TableCell>
-                  <TableCell>
-                    <Typography variant="h6">Status</Typography>
-                  </TableCell>
-                  <TableCell>
-                    <Typography variant="h6">Action</Typography>
-                  </TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -242,40 +215,9 @@ const PaginationTable = () => {
                       <Typography variant="subtitle2">{row.orderno}</Typography>
                     </TableCell>
                     <TableCell>
-                      <Stack direction="row" spacing={2} alignItems="center">
-                        {/* <Avatar src={row.imgsrc} alt={"row.imgsrc"} /> */}
-                        <Typography variant="subtitle2" fontWeight="600">
-                          {row.items}
-                        </Typography>
-                      </Stack>
-                    </TableCell>
-                    <TableCell>
                       <Typography color="textSecondary" variant="h6" fontWeight="400">
-                        {row.date}
+                        {row.items}
                       </Typography>
-                    </TableCell>
-                    <TableCell>
-                      <Chip
-                        color={
-                          row.status === 'Completed'
-                            ? 'success'
-                            : row.status === 'Pending'
-                            ? 'warning'
-                            : row.status === 'Cancel'
-                            ? 'error'
-                            : 'secondary'
-                        }
-                        sx={{
-                          borderRadius: '6px',
-                        }}
-                        size="small"
-                        label={row.status}
-                      />
-                    </TableCell>
-                    <TableCell>
-                      <IconButton>
-                        <IconDownload width={18} />
-                      </IconButton>
                     </TableCell>
                   </TableRow>
                 ))}

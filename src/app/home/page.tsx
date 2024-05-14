@@ -21,7 +21,7 @@ const Home: React.FC = () => {
   return (
     <div style={{ display: 'flex', height: '100vh' }}>
       <Sidebar />
-      <div style={{ flex: 1, overflowY: 'auto', paddingLeft: '2px' }}>
+      <div style={{ flex: 1, overflowY: 'auto' }}>
         <Header />
         <Table />
       </div>
