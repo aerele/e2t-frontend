@@ -162,7 +162,7 @@ export default function Register() {
             setConfirmPassword={setConfirmPassword}
             submit={onSubmit}
           />
-          <PasswordStrengthBar password={password} />
+          {/* <PasswordStrengthBar password={password} /> */}
         </Box>
       </Grid>
     </Grid>
