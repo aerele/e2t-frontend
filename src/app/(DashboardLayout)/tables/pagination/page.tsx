@@ -30,6 +30,7 @@ import PageContainer from '@/app/components/container/PageContainer';
 import ParentCard from '@/app/components/shared/ParentCard';
 import { Stack } from '@mui/system';
 import BlankCard from '@/app/components/shared/BlankCard';
+import { IconDownload } from '@tabler/icons-react';
 
 interface TablePaginationActionsProps {
   count: number;
@@ -226,6 +227,9 @@ const PaginationTable = () => {
                   <TableCell>
                     <Typography variant="h6">Status</Typography>
                   </TableCell>
+                  <TableCell>
+                    <Typography variant="h6">Action</Typography>
+                  </TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -267,6 +271,11 @@ const PaginationTable = () => {
                         size="small"
                         label={row.status}
                       />
+                    </TableCell>
+                    <TableCell>
+                      <IconButton>
+                        <IconDownload width={18} />
+                      </IconButton>
                     </TableCell>
                   </TableRow>
                 ))}

@@ -2,7 +2,7 @@
 import React from 'react';
 import Sidebar from "../../app/(DashboardLayout)/layout/vertical/sidebar/Sidebar";
 import Header from "../(DashboardLayout)/layout/horizontal/header/Header";
-import PaymentTable from '../components/tables/PaymentTable';
+import Pagination from "../(DashboardLayout)/tables/pagination/page";
 import { Box, Grid, TextField } from '@mui/material';
 import MyComponent from '../components/tables/MyComponent';
 import Button from '@mui/material/Button';
@@ -24,7 +24,7 @@ const Home: React.FC = () => {
         <Header />
         <MyComponent/>
         <Box sx={{padding:'1rem', overflowY:'auto', height:'24.5rem', marginTop:'1rem'}}>
-            <PaymentTable />
+            <Pagination />
         </Box>
         <Box sx={{padding:'1rem'}}>
             <Grid container spacing={2} alignItems="center" item xs={15} sm={15} sx={{ paddingLeft: '1rem', paddingTop: '1rem', width: '100%' }}>

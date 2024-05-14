@@ -16,7 +16,7 @@ export default function Register() {
   const [email, setEmail] = useState('')
 	const [password, setPassword] = useState('')
   const [isSubmitted, setisSubmitted] = useState(false)
-  const { call: signup } = useFrappePostCall('e2t_backend.python.authentication.sign_up')
+  const { call: signup } = useFrappePostCall('e2t_backend.authentication.authenticate.sign_up')
     
   useEffect(() => {{
     if (isSubmitted){
