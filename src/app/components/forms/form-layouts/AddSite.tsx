@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import { Button, Box, Grid, Typography, Alert } from '@mui/material';
+import { Button, Box, Grid, Typography, Snackbar, Alert, IconButton } from '@mui/material';
 import CustomTextField from '../theme-elements/CustomTextField';
 import CustomFormLabel from '../theme-elements/CustomFormLabel';
 import ParentCard from '../../shared/ParentCard';
 import DoneIcon from '@mui/icons-material/Done';
 import ClearIcon from '@mui/icons-material/Clear';
+import CloseIcon from '@mui/icons-material/Close';
 import { useFrappePostCall } from 'frappe-react-sdk';
 
 interface FormData {
@@ -23,6 +24,8 @@ const AddSite: React.FC = () => {
   const [isValidated, setIsValidated] = useState<boolean>(false);
   const [data, setData] = useState<{ [key: string]: number }>({});
   const [error, setError] = useState<string | null>(null);
+  const [snackbarOpen1, setSnackbarOpen1] = useState<boolean>(false);
+  const [snackbarOpen2, setSnackbarOpen2] = useState<boolean>(false);
 
   const { call: validateUrl } = useFrappePostCall('e2t_backend.api.validate_url');
   const { call: addSite } = useFrappePostCall('e2t_backend.api.add_site');
@@ -45,6 +48,7 @@ const AddSite: React.FC = () => {
       if (response.message === 'Login Failed') {
         setError('Login Failed');
         setIsValidated(false);
+        setSnackbarOpen1(true);
       } else {
         setData(response.message);
         setIsValidated(true);
@@ -52,6 +56,7 @@ const AddSite: React.FC = () => {
     } catch (error) {
       console.error('Validation Error:', error);
       setError('An unexpected error occurred.');
+      setSnackbarOpen1(true);
     }
   };
 
@@ -60,7 +65,15 @@ const AddSite: React.FC = () => {
     if (Object.values(data).every(val => val === 1)) {
       console.log('Form data:', formData);
       addSite({ data: JSON.stringify(formData) });
+      setSnackbarOpen2(true);
     }
+  };
+
+  const handleSnackbarClose1 = () => {
+    setSnackbarOpen1(false);
+  };
+  const handleSnackbarClose2 = () => {
+    setSnackbarOpen2(false);
   };
 
   return (
@@ -104,7 +117,6 @@ const AddSite: React.FC = () => {
                 value={formData.password}
                 onChange={handleChange}
               />
-              {error && <Alert severity="error" sx={{ mt: 2 }}>{error}</Alert>}
               <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
                 <Button color="primary" variant="contained" onClick={handleValidate} sx={{ mt: 2 }}>
                   Validate
@@ -135,6 +147,36 @@ const AddSite: React.FC = () => {
           </ParentCard>
         </Grid>
       </Grid>
+      <Snackbar
+        open={snackbarOpen1}
+        autoHideDuration={6000}
+        onClose={handleSnackbarClose1}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+        action={
+          <IconButton size="small" aria-label="close" color="inherit" onClick={handleSnackbarClose1}>
+            <CloseIcon fontSize="small" />
+          </IconButton>
+        }
+      >
+          <Alert onClose={handleSnackbarClose1} severity="error" sx={{ width: '100%' }}>
+            {error}
+          </Alert>
+      </Snackbar>
+      <Snackbar
+        open={snackbarOpen2}
+        autoHideDuration={6000}
+        onClose={handleSnackbarClose2}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+        action={
+          <IconButton size="small" aria-label="close" color="inherit" onClick={handleSnackbarClose2}>
+            <CloseIcon fontSize="small" />
+          </IconButton>
+        }
+      >
+          <Alert onClose={handleSnackbarClose2} severity="success" sx={{ width: '100%' }}>
+            Site Added Successfully!
+          </Alert>
+      </Snackbar>
     </Box>
   );
 };
