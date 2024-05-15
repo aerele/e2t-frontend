@@ -15,37 +15,40 @@ export default function Register() {
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
 	const [password, setPassword] = useState('')
+  const [confirmPassword, setConfirmPassword] = useState('')
   const [isSubmitted, setisSubmitted] = useState(false)
   const { call: signup } = useFrappePostCall('e2t_backend.authentication.authenticate.sign_up')
-  const router = useRouter();  
+  const router = useRouter();
+    
   useEffect(() => {{
     if (isSubmitted){
-    signup({
-      email: email,
-      full_name: name,
-      password: password
-    }).then((res) => {
-      if(res && res.message){
-        if (res.message.status){
-          toast.success(res.message.msg)
-          setisSubmitted(!isSubmitted)
-          router.push('/login')
+      if (password !== confirmPassword) {
+        toast.error("Passwords do not match");
+        setisSubmitted(false);
+        return;
+      }  
+      signup({
+        email: email,
+        full_name: name,
+        password: password
+      }).then((res) => {
+        if(res && res.message){
+          if (res.message.status){
+            toast.success(res.message.msg)
+            setisSubmitted(!isSubmitted)
+            router.push('/login')         
+           }
         }
-        else{
-          toast.error(res.message.msg)
-          setisSubmitted(!isSubmitted)
+      }).catch((e) => {
+        if (e.hasOwnProperty('_server_messages')){
+          const serverMessages = JSON.parse(e._server_messages);
+          if (serverMessages){
+            const serverErrorMessage=JSON.parse(serverMessages);
+            toast.error(serverErrorMessage.message)
+            setisSubmitted(!isSubmitted)
+          }
         }
-      }
-    }).catch((e) => {
-      if (e.hasOwnProperty('_server_messages')){
-        const serverMessages = JSON.parse(e._server_messages);
-        if (serverMessages){
-          const serverErrorMessage=JSON.parse(serverMessages);
-          toast.error(serverErrorMessage.message)
-          setisSubmitted(!isSubmitted)
-        }
-      }
-  })
+    })
   }
   }
 }, [isSubmitted])
@@ -148,9 +151,11 @@ export default function Register() {
             name={name}
             email={email}
             password={password}
+            confirmPassword={confirmPassword}
             setName={setName}
             setEmail={setEmail}
             setPassword={setPassword}
+            setConfirmPassword={setConfirmPassword}
             submit={onSubmit}
           />
         </Box>

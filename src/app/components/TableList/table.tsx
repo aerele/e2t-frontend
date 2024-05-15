@@ -199,14 +199,15 @@ const EnhancedTableToolbar = (props: EnhancedTableToolbarProps) => {
             onChange={handleSearch}
             value={search}
           />
-          
+
         </Box>
       )}
-        <Tooltip title="Add Site">
-          <IconButton href='/add-site'>
-            <AddIcon/>
-          </IconButton>
-        </Tooltip>
+      <Tooltip title="Add Site">
+        <Button variant="contained" sx={{width:'8rem'}}>
+          <span>Add Site</span>
+          <AddIcon sx={{ paddingLeft: '0.1rem', fontSize: 'large' }} />
+        </Button>
+      </Tooltip>
       {numSelected > 0 ? (
         <Tooltip title="Delete">
           <IconButton>
@@ -220,7 +221,7 @@ const EnhancedTableToolbar = (props: EnhancedTableToolbarProps) => {
           </IconButton>
         </Tooltip>
       )}
-      
+
     </Toolbar>
   );
 };

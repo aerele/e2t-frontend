@@ -2,28 +2,29 @@
 import React from 'react';
 import Sidebar from "../../app/(DashboardLayout)/layout/vertical/sidebar/Sidebar";
 import Header from "../(DashboardLayout)/layout/horizontal/header/Header";
-import Pagination from "../(DashboardLayout)/tables/pagination/page";
-import { Box, Grid, FormControl, InputLabel, Select, MenuItem, TextField } from '@mui/material';
+import Vouchers from "../(DashboardLayout)/tables/vouchers/page";
+import { Box, Typography } from '@mui/material';
 import Button from '@mui/material/Button';
-import DownloadForOfflineIcon from '@mui/icons-material/DownloadForOffline';
-
+import PaymentIcon from '@mui/icons-material/Payment';
 const Voucher: React.FC = () => {
   return (
     <div style={{ display: 'flex', height: '100vh' }}>
       <Sidebar />
       <div style={{ flex: 1, overflowY: 'auto', paddingLeft: '2px' }}>
         <Header />
-        <Pagination />
-        <Box sx={{padding:'1rem'}}>
-            <Grid container spacing={2} alignItems="center" item xs={5} sm={15} sx={{ paddingTop: '0.5rem', width: '100%' }}>
-              <Grid sx={{ paddingLeft: '55rem'}}>
-                <Button variant="contained" color='success'>
-                    <span>Download</span>
-                    <DownloadForOfflineIcon sx={{paddingLeft:'0.1rem', fontSize:'small'}} />
-                </Button>
-              </Grid>
-            </Grid>
+        <Box sx={{ padding: '1rem' }}>
+          <Vouchers />
         </Box>
+        <Box sx={{ padding: '1rem', display: 'flex', alignItems: 'center',justifyContent: 'flex-end'  }}>
+          <Typography variant="body1" sx={{ marginRight: '1rem' }}>
+            Actual Cost: $1000.25
+          </Typography>
+          <Button variant="contained" color='success' href="/payment-method">
+            <span>Proceed to payment</span>
+            <PaymentIcon sx={{ paddingLeft: '0.1rem', fontSize: 'large' }} />
+          </Button>
+        </Box>
+
       </div>
     </div>
   );
