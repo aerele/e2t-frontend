@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { alpha, useTheme } from '@mui/material/styles';
 import { format } from 'date-fns';
-import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import IconButton from '@mui/material/IconButton';
@@ -28,6 +27,9 @@ import { IconDotsVertical, IconFilter, IconSearch, IconTrash } from '@tabler/ico
 import { ProductType } from '../../(DashboardLayout)/types/apps/eCommerce';
 import Button from '@mui/material/Button';
 import AddIcon from '@mui/icons-material/Add';
+import { useFrappeGetDocList, useFrappeDeleteDoc } from 'frappe-react-sdk';
+import { useEffect, useState } from 'react';
+import Link from 'next/link';
 
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
   if (b[orderBy] < a[orderBy]) {
@@ -103,6 +105,25 @@ const headCells: readonly HeadCell[] = [
     numeric: false,
     disablePadding: false,
     label: 'Action',
+  },
+];
+
+const staticData = [
+  {
+    title: 'Product 1',
+    category: 'Category A',
+    created: '2024-05-01',
+    stock: true,
+    price: 100,
+    photo: 'url_to_photo_1',
+  },
+  {
+    title: 'Product 2',
+    category: 'Category B',
+    created: '2024-05-05',
+    stock: false,
+    price: 150,
+    photo: 'url_to_photo_2',
   },
 ];
 
@@ -194,7 +215,7 @@ const EnhancedTableToolbar = (props: EnhancedTableToolbarProps) => {
                 </InputAdornment>
               ),
             }}
-            placeholder="Search Product"
+            placeholder="Search Site"
             size="small"
             onChange={handleSearch}
             value={search}
@@ -202,13 +223,15 @@ const EnhancedTableToolbar = (props: EnhancedTableToolbarProps) => {
 
         </Box>
       )}
-      <Tooltip title="Add Site">
-        <Button variant="contained" sx={{width:'8rem'}}>
-          <span>Add Site</span>
-          <AddIcon sx={{ paddingLeft: '0.1rem', fontSize: 'large' }} />
-        </Button>
-      </Tooltip>
-      {numSelected > 0 ? (
+      {numSelected > 0 ? null : (
+        <Tooltip title="Add Site">
+          <Button variant="contained" sx={{ width: '8rem' }} href='/add-site'>
+            <span>Add Site</span>
+            <AddIcon sx={{ paddingLeft: '0.1rem', fontSize: 'large' }} />
+          </Button>
+        </Tooltip>
+      )}
+      {numSelected > 1 ? (
         <Tooltip title="Delete">
           <IconButton>
             <IconTrash width="18" />
@@ -217,7 +240,7 @@ const EnhancedTableToolbar = (props: EnhancedTableToolbarProps) => {
       ) : (
         <Tooltip title="Filter list">
           <IconButton>
-            <IconFilter size="1.2rem" />
+            {/* <IconFilter size="1.2rem" /> */}
           </IconButton>
         </Tooltip>
       )}
@@ -234,6 +257,27 @@ const ProductTableList = () => {
   const [dense, setDense] = React.useState(false);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
+
+  const { data, error, mutate: refetch_data, isValidating, isLoading } = useFrappeGetDocList("Site Details", { fields: ['url', 'email'] })
+  const {deleteDoc, isCompleted, loading, reset} = useFrappeDeleteDoc()
+  const [sites, setSites] = useState<any[]>([]);
+  useEffect(() => {
+    if (data) {
+      console.log("---------------------------", data);
+      setSites(data)
+    }
+  }, [data])
+
+  const handleDelete = async (siteId: any) => {
+    try {
+      deleteDoc("Site Details", siteId)
+      console.log('Completed',isCompleted)
+      refetch_data();
+    } catch (error) {
+      console.error('Error deleting site:', error);
+    }
+  };
+
   const dispatch = useDispatch();
 
   //Fetch Products
@@ -241,18 +285,18 @@ const ProductTableList = () => {
     dispatch(fetchProducts());
   }, [dispatch]);
 
-  const getProducts: ProductType[] = useSelector((state) => state.ecommerceReducer.products);
+  // const getProducts: ProductType[] = useSelector((state) => state.ecommerceReducer.products);
 
-  const [rows, setRows] = React.useState<any>(getProducts);
+  const [rows, setRows] = React.useState<any>(sites);
   const [search, setSearch] = React.useState('');
 
   React.useEffect(() => {
-    setRows(getProducts);
-  }, [getProducts]);
+    setRows(sites);
+  }, [sites]);
 
   const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const filteredRows: ProductType[] = getProducts.filter((row) => {
-      return row.title.toLowerCase().includes(event.target.value);
+    const filteredRows: ProductType[] = sites.filter((row) => {
+      return row.url.toLowerCase().includes(event.target.value);
     });
     setSearch(event.target.value);
     setRows(filteredRows);
@@ -345,17 +389,17 @@ const ProductTableList = () => {
                 {stableSort(rows, getComparator(order, orderBy))
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                   .map((row: any, index) => {
-                    const isItemSelected = isSelected(row.title);
+                    const isItemSelected = isSelected(row.url);
                     const labelId = `enhanced-table-checkbox-${index}`;
 
                     return (
                       <TableRow
                         hover
-                        onClick={(event) => handleClick(event, row.title)}
+                        onClick={(event) => handleClick(event, row.url)}
                         role="checkbox"
                         aria-checked={isItemSelected}
                         tabIndex={-1}
-                        key={row.title}
+                        key={row.url}
                         selected={isItemSelected}
                       >
                         <TableCell padding="checkbox">
@@ -370,23 +414,21 @@ const ProductTableList = () => {
 
                         <TableCell>
                           <Box display="flex" alignItems="center">
-                            <Avatar src={row.photo} alt="product" sx={{ width: 56, height: 56 }} />
                             <Box
                               sx={{
                                 ml: 2,
                               }}
                             >
-                              <Typography variant="h6" fontWeight="600">
-                                {row.title}
-                              </Typography>
-                              <Typography color="textSecondary" variant="subtitle2">
-                                {row.category}
-                              </Typography>
+                              <Link href="/erp2tally" passHref>
+                                <Typography component="a">
+                                  {row.url}
+                                </Typography>
+                              </Link>
                             </Box>
                           </Box>
                         </TableCell>
                         <TableCell>
-                          <Typography>{format(new Date(row.created), 'E, MMM d yyyy')}</Typography>
+                          <Typography>{row.email}</Typography>
                         </TableCell>
 
                         <TableCell>
@@ -408,22 +450,16 @@ const ProductTableList = () => {
                                 ml: 1,
                               }}
                             >
-                              {row.stock ? 'InStock' : 'Out of Stock'}
+                              {row.stock ? 'Active' : 'Inactive'}
                             </Typography>
                           </Box>
                         </TableCell>
-
                         <TableCell>
-                          <Typography fontWeight={600} variant="h6">
-                            ${row.price}
-                          </Typography>
                         </TableCell>
                         <TableCell>
-                          <Tooltip title="Edit">
-                            <IconButton size="small">
-                              <IconDotsVertical size="1.1rem" />
-                            </IconButton>
-                          </Tooltip>
+                          <IconButton onClick={() => handleDelete(row.url)}>
+                            <IconTrash size="1.2rem" />
+                          </IconButton>
                         </TableCell>
                       </TableRow>
                     );
