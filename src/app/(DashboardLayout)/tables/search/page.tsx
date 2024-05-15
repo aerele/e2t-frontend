@@ -4,19 +4,9 @@ import { Box } from '@mui/material';
 import PageContainer from '@/app/components/container/PageContainer';
 import ProductTableList from '@/app/components/TableList/table';
 
-// const BCrumb = [
-//   {
-//     to: '/',
-//     title: 'Home',
-//   },
-//   {
-//     title: 'Search Table',
-//   },
-// ];
-
 const SearchTable = () => {
   return (
-    <PageContainer title="Search Table" description="this is Search Table">
+    <PageContainer title="Connected Sites" description="this is Search Table">
       <Box>
         <ProductTableList />
       </Box>

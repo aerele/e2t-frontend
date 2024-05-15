@@ -11,14 +11,14 @@ const MyComponent: React.FC = () => {
     <Box sx={{ width: '100%' }}>
       <Grid container spacing={2} alignItems="center" item xs={10} sm={15} sx={{ paddingLeft: '1rem', paddingTop: '1rem' }}>
         <Grid sx={{ paddingLeft: '1rem', paddingTop: '1rem' }}  >
-          <FormControl sx={{ width: '120px' }}>
+          <FormControl sx={{ width: '20rem' }}>
             <InputLabel id="demo-simple-select-label">Site</InputLabel>
             <Select
               labelId="demo-simple-select-label"
               id="demo-simple-select"
               // value={age}
               label="Age"
-              // onChange={handleChange}
+            // onChange={handleChange}
             >
               <MenuItem value="Google">Google</MenuItem>
               <MenuItem value="FierFox">FierFox</MenuItem>
@@ -27,7 +27,7 @@ const MyComponent: React.FC = () => {
           </FormControl>
         </Grid>
         <Grid sx={{ paddingLeft: '1rem', paddingTop: '1rem' }}>
-          <FormControl sx={{ width: '155px' }} >
+          <FormControl sx={{ width: '20rem' }} >
             <InputLabel id="demo-simple-select-label">Company</InputLabel>
             <Select
               labelId="demo-simple-select-label"
@@ -35,7 +35,7 @@ const MyComponent: React.FC = () => {
               // value={age}
               label="Company"
               autoWidth
-              // onChange={handleChange}
+            // onChange={handleChange}
             >
               <MenuItem value="Google">Aerele</MenuItem>
               <MenuItem value="FierFox">SD</MenuItem>
@@ -43,40 +43,41 @@ const MyComponent: React.FC = () => {
           </FormControl>
         </Grid>
         <Grid sx={{ paddingLeft: '1rem', paddingTop: '1rem' }}>
-          <TextField id="outlined-basic" label="Fiscal Year" variant="outlined" sx={{ width: '120px' }} />
+          <TextField id="outlined-basic" label="Fiscal Year" variant="outlined" sx={{ width: '20rem' }} />
         </Grid>
         <Grid sx={{ paddingLeft: '1rem', paddingTop: '1rem' }}>
           {/* <TextField id="outlined-basic" label="From Date" variant="outlined" sx={{ width: '120px' }} /> */}
           <CustomTextField
-                  id="date"
-                  type="date"
-                  label="From Date"
-                  variant="outlined"
-                  fullWidth
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
-                />
+            id="date"
+            type="date"
+            label="From Date"
+            variant="outlined"
+            fullWidth
+            InputLabelProps={{
+              shrink: true,
+            }}
+          />
         </Grid>
         <Grid sx={{ paddingLeft: '1rem', paddingTop: '1rem' }}>
           {/* <TextField id="outlined-basic" label="To Date" variant="outlined" sx={{ width: '120px' }} /> */}
           <CustomTextField
-                  id="date"
-                  type="date"
-                  label="To Date"
-                  variant="outlined"
-                  fullWidth
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
-                />
+            id="date"
+            type="date"
+            label="To Date"
+            variant="outlined"
+            fullWidth
+            InputLabelProps={{
+              shrink: true,
+            }}
+          />
         </Grid>
-        <Grid sx={{ paddingLeft: '10rem', paddingTop: '1rem' }}>
-            <Button variant="contained">
-                <span>Fetch</span>
-                <ArrowForwardIosIcon sx={{paddingLeft:'0.1rem', fontSize:'small'}} />
-            </Button>
+        <Grid sx={{ paddingLeft:'3rem', paddingTop: '1rem' }}>
+          <Button variant="contained">
+            <span>Fetch</span>
+            <ArrowForwardIosIcon sx={{ paddingLeft: '0.1rem', fontSize: 'small' }} />
+          </Button>
         </Grid>
+
       </Grid>
     </Box>
   );
