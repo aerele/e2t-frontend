@@ -1,12 +1,30 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import { Box, Grid, FormControl, InputLabel, Select, MenuItem, TextField } from '@mui/material';
 import Button from '@mui/material/Button';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import CustomTextField from '../forms/theme-elements/CustomTextField';
+import { useFrappeGetCall } from 'frappe-react-sdk';
+
 
 
 
 const MyComponent: React.FC = () => {
+  // const getData = async () => {
+  //   try {
+  //     console.log('Fetching data...');
+  //     const response = await fetchData();
+  //     alert(response);
+  //   } catch (err) {
+  //     console.error('Error fetching data:', err);
+  //   }
+  // };
+  const { data } = useFrappeGetCall('e2t_backend.api.fetch_data');
+  console.log(data);
+
+
+  // useEffect(() => {
+  //   getData();
+  // }, []);
   return (
     <Box sx={{ width: '100%' }}>
       <Grid container spacing={2} alignItems="center" item xs={10} sm={15} sx={{ paddingLeft: '1rem', paddingTop: '1rem' }}>

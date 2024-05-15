@@ -143,33 +143,37 @@ const AddSite: React.FC = () => {
                 value={formData.password}
                 onChange={handleChange}
               />
-              <CustomFormLabel htmlFor="permission">Permission</CustomFormLabel>
-              <Box>
-                {entries.length !== 0 ? (
-                  <Grid container spacing={2}>
-                    <Grid item xs={6}>
-                      {firstHalf.map(([key, value]) => (
-                        <Box key={key} sx={{ display: 'flex', alignItems: 'center' }}>
-                          {value === 1 ? <DoneIcon color='success' /> : <ClearIcon color='error' />}
-                          <Typography style={{ paddingLeft: "2%" }}>{key}</Typography>
-                        </Box>
-                      ))}
+              {Object.keys(data).length !== 0 ? 
+              <>
+                <CustomFormLabel htmlFor="permission">Permission</CustomFormLabel>
+                <Box>
+                  {entries.length !== 0 ? (
+                    <Grid container spacing={2}>
+                      <Grid item xs={6}>
+                        {firstHalf.map(([key, value]) => (
+                          <Box key={key} sx={{ display: 'flex', alignItems: 'center' }}>
+                            {value === 1 ? <DoneIcon color='success' /> : <ClearIcon color='error' />}
+                            <Typography style={{ paddingLeft: "2%" }}>{key}</Typography>
+                          </Box>
+                        ))}
+                      </Grid>
+                      <Grid item xs={6}>
+                        {secondHalf.map(([key, value]) => (
+                          <Box key={key} sx={{ display: 'flex', alignItems: 'center' }}>
+                            {value === 1 ? <DoneIcon color='success' /> : <ClearIcon color='error' />}
+                            <Typography style={{ paddingLeft: "2%" }}>{key}</Typography>
+                          </Box>
+                        ))}
+                      </Grid>
                     </Grid>
-                    <Grid item xs={6}>
-                      {secondHalf.map(([key, value]) => (
-                        <Box key={key} sx={{ display: 'flex', alignItems: 'center' }}>
-                          {value === 1 ? <DoneIcon color='success' /> : <ClearIcon color='error' />}
-                          <Typography style={{ paddingLeft: "2%" }}>{key}</Typography>
-                        </Box>
-                      ))}
-                    </Grid>
-                  </Grid>
-                ) : (
-                  <Typography style={{ fontWeight: 'semibold', fontSize: '10px', marginLeft: '25%', color: 'gray', marginTop: '10%' }}>
-                    Fill the fields to Show the PERMISSIONS
-                  </Typography>
-                )}
-              </Box>
+                  ) : (
+                    <Typography style={{ fontWeight: 'semibold', fontSize: '10px', marginLeft: '25%', color: 'gray', marginTop: '10%' }}>
+                      Fill the fields to Show the PERMISSIONS
+                    </Typography>
+                  )}
+                </Box>
+              </> : null
+              }
               <div>
                 {validationStatus === 'valid' ? (
                   <Button color="primary" variant="contained" type="submit" sx={{ mt: 2, width: '100%' }}>
