@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useState } from 'react';
 import { alpha, useTheme } from '@mui/material/styles';
 import { format } from 'date-fns';
 import Avatar from '@mui/material/Avatar';
@@ -28,6 +29,9 @@ import { IconDotsVertical, IconFilter, IconSearch, IconTrash } from '@tabler/ico
 import { ProductType } from '../../(DashboardLayout)/types/apps/eCommerce';
 import Button from '@mui/material/Button';
 import AddIcon from '@mui/icons-material/Add';
+import { AddSite } from '../forms/form-layouts';
+import Dialog from '@mui/material/Dialog';
+import DialogTitle from '@mui/material/DialogTitle';
 
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
   if (b[orderBy] < a[orderBy]) {
@@ -36,7 +40,6 @@ function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
   if (b[orderBy] > a[orderBy]) {
     return 1;
   }
-
   return 0;
 }
 
@@ -58,10 +61,8 @@ function stableSort<T>(array: T[], comparator: (a: T, b: T) => number) {
     if (order !== 0) {
       return order;
     }
-
     return a[1] - b[1];
   });
-
   return stabilizedThis.map((el) => el[0]);
 }
 
@@ -73,37 +74,11 @@ interface HeadCell {
 }
 
 const headCells: readonly HeadCell[] = [
-  {
-    id: 'name',
-    numeric: false,
-    disablePadding: false,
-    label: 'URL',
-  },
-  {
-    id: 'pname',
-    numeric: false,
-    disablePadding: false,
-    label: 'User',
-  },
-
-  {
-    id: 'status',
-    numeric: false,
-    disablePadding: false,
-    label: 'Status',
-  },
-  {
-    id: 'price',
-    numeric: false,
-    disablePadding: false,
-    label: 'Permissions',
-  },
-  {
-    id: 'action',
-    numeric: false,
-    disablePadding: false,
-    label: 'Action',
-  },
+  { id: 'name', numeric: false, disablePadding: false, label: 'URL' },
+  { id: 'pname', numeric: false, disablePadding: false, label: 'User' },
+  { id: 'status', numeric: false, disablePadding: false, label: 'Status' },
+  { id: 'price', numeric: false, disablePadding: false, label: 'Permissions' },
+  { id: 'action', numeric: false, disablePadding: false, label: 'Action' },
 ];
 
 interface EnhancedTableProps {
@@ -129,9 +104,7 @@ function EnhancedTableHead(props: EnhancedTableProps) {
             color="primary"
             checked={rowCount > 0 && numSelected === rowCount}
             onChange={onSelectAllClick}
-            inputProps={{
-              'aria-label': 'select all desserts',
-            }}
+            inputProps={{ 'aria-label': 'select all desserts' }}
           />
         </TableCell>
         {headCells.map((headCell) => (
@@ -168,6 +141,10 @@ interface EnhancedTableToolbarProps {
 
 const EnhancedTableToolbar = (props: EnhancedTableToolbarProps) => {
   const { numSelected, handleSearch, search } = props;
+  const [dialog, setDialog] = useState(false);
+  const handleClose = () => {
+    setDialog(false);
+  };
 
   return (
     <Toolbar
@@ -199,11 +176,10 @@ const EnhancedTableToolbar = (props: EnhancedTableToolbarProps) => {
             onChange={handleSearch}
             value={search}
           />
-
         </Box>
       )}
       <Tooltip title="Add Site">
-        <Button variant="contained" sx={{width:'8rem'}}>
+        <Button variant="contained" sx={{ width: '8rem' }} onClick={() => setDialog(true)}>
           <span>Add Site</span>
           <AddIcon sx={{ paddingLeft: '0.1rem', fontSize: 'large' }} />
         </Button>
@@ -221,7 +197,25 @@ const EnhancedTableToolbar = (props: EnhancedTableToolbarProps) => {
           </IconButton>
         </Tooltip>
       )}
-
+      <Dialog open={dialog} onClose={handleClose}
+      PaperProps={{
+        sx: {
+          '&::-webkit-scrollbar': {
+            width: 0,
+          },
+          '&::-webkit-scrollbar-track': {
+            background: 'transparent',
+          },
+          '&::-webkit-scrollbar-thumb': {
+            backgroundColor: 'rgba(0, 0, 0, 0.2)',
+            borderRadius: 4,
+            border: '0px solid transparent',
+          },
+        },
+      }}>
+        <DialogTitle>Add Site</DialogTitle>
+        <AddSite />
+      </Dialog>
     </Toolbar>
   );
 };
@@ -270,13 +264,12 @@ const ProductTableList = () => {
     if (event.target.checked) {
       const newSelecteds = rows.map((n: any) => n.title);
       setSelected(newSelecteds);
-
       return;
     }
     setSelected([]);
   };
 
-  // This is for the single row sleect
+  // This is for the single row select
   const handleClick = (event: React.MouseEvent<unknown>, name: string) => {
     const selectedIndex = selected.indexOf(name);
     let newSelected: readonly string[] = [];
@@ -324,15 +317,11 @@ const ProductTableList = () => {
         <EnhancedTableToolbar
           numSelected={selected.length}
           search={search}
-          handleSearch={(event: any) => handleSearch(event)}
+          handleSearch={handleSearch}
         />
         <Paper variant="outlined" sx={{ mx: 2, mt: 1, border: `1px solid ${borderColor}` }}>
           <TableContainer>
-            <Table
-              sx={{ minWidth: 750 }}
-              aria-labelledby="tableTitle"
-              size={dense ? 'small' : 'medium'}
-            >
+            <Table sx={{ minWidth: 750 }} aria-labelledby="tableTitle" size={dense ? 'small' : 'medium'}>
               <EnhancedTableHead
                 numSelected={selected.length}
                 order={order}
@@ -362,20 +351,13 @@ const ProductTableList = () => {
                           <CustomCheckbox
                             color="primary"
                             checked={isItemSelected}
-                            inputProps={{
-                              'aria-labelledby': labelId,
-                            }}
+                            inputProps={{ 'aria-labelledby': labelId }}
                           />
                         </TableCell>
-
                         <TableCell>
                           <Box display="flex" alignItems="center">
                             <Avatar src={row.photo} alt="product" sx={{ width: 56, height: 56 }} />
-                            <Box
-                              sx={{
-                                ml: 2,
-                              }}
-                            >
+                            <Box sx={{ ml: 2 }}>
                               <Typography variant="h6" fontWeight="600">
                                 {row.title}
                               </Typography>
@@ -388,14 +370,13 @@ const ProductTableList = () => {
                         <TableCell>
                           <Typography>{format(new Date(row.created), 'E, MMM d yyyy')}</Typography>
                         </TableCell>
-
                         <TableCell>
                           <Box display="flex" alignItems="center">
                             <Box
                               sx={{
                                 backgroundColor: row.stock
-                                  ? (theme) => theme.palette.success.main
-                                  : (theme) => theme.palette.error.main,
+                                  ? theme.palette.success.main
+                                  : theme.palette.error.main,
                                 borderRadius: '100%',
                                 height: '10px',
                                 width: '10px',
@@ -404,15 +385,12 @@ const ProductTableList = () => {
                             <Typography
                               color="textSecondary"
                               variant="subtitle2"
-                              sx={{
-                                ml: 1,
-                              }}
+                              sx={{ ml: 1 }}
                             >
                               {row.stock ? 'InStock' : 'Out of Stock'}
                             </Typography>
                           </Box>
                         </TableCell>
-
                         <TableCell>
                           <Typography fontWeight={600} variant="h6">
                             ${row.price}
@@ -429,11 +407,7 @@ const ProductTableList = () => {
                     );
                   })}
                 {emptyRows > 0 && (
-                  <TableRow
-                    style={{
-                      height: (dense ? 33 : 53) * emptyRows,
-                    }}
-                  >
+                  <TableRow style={{ height: (dense ? 33 : 53) * emptyRows }}>
                     <TableCell colSpan={6} />
                   </TableRow>
                 )}
@@ -450,12 +424,6 @@ const ProductTableList = () => {
             onRowsPerPageChange={handleChangeRowsPerPage}
           />
         </Paper>
-        {/* <Box ml={2}>
-          <FormControlLabel
-            control={<CustomSwitch checked={dense} onChange={handleChangeDense} />}
-            label="Dense padding"
-          />
-        </Box> */}
       </Box>
     </Box>
   );
