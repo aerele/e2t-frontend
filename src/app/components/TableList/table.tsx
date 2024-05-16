@@ -236,7 +236,7 @@ const EnhancedTableToolbar = (props: EnhancedTableToolbarProps) => {
         },
       }}>
         <DialogTitle>Add Site</DialogTitle>
-        <AddSite />
+        <AddSite handleClose={handleClose} />
       </Dialog>
     </Toolbar>
   );
