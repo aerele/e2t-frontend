@@ -122,6 +122,7 @@ const AddSite: React.FC = () => {
                 value={formData.password}
                 onChange={handleChange}
               />
+              {error && <Alert severity="error" sx={{ mt: 2 }}>{error}</Alert>}
               <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
                 <Button color="primary" variant="contained" onClick={handleValidate} sx={{ mt: 2 }}>
                   Validate
