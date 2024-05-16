@@ -29,8 +29,7 @@ const AddSite: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [snackbarOpen1, setSnackbarOpen1] = useState<boolean>(false);
   const [snackbarOpen2, setSnackbarOpen2] = useState<boolean>(false);
-  const router = useRouter();
-
+  const [snackbarOpen3, setSnackbarOpen3] = useState<boolean>(false);
 
   const { call: validateUrl } = useFrappePostCall('e2t_backend.api.validate_url');
   const { call: addSite } = useFrappePostCall('e2t_backend.api.add_site');
@@ -57,6 +56,9 @@ const AddSite: React.FC = () => {
       } else {
         setData(response.message);
         setIsValidated(true);
+        if (Object.values(response.message).some(val => val === 0)) {
+          setSnackbarOpen3(true);
+        }
       }
     } catch (error) {
       console.error('Validation Error:', error);
@@ -80,12 +82,34 @@ const AddSite: React.FC = () => {
   const handleSnackbarClose2 = () => {
     setSnackbarOpen2(false);
   };
+  const handleSnackbarClose3 = () => {
+    setSnackbarOpen3(false);
+  };
+
+  const checkValidationStatus = () => {
+    if (Object.keys(data).length === 0) {
+      return 'no-data';
+    }
+    if (Object.values(data).some(value => value === 0)) {
+      return 'invalid';
+    }
+    if (Object.values(data).every(value => value === 1)) {
+      return 'valid';
+    }
+    return 'partial';
+  };
+
+  const validationStatus = checkValidationStatus();
+
+  const entries = Object.entries(data);
+  const firstHalf = entries.slice(0, Math.ceil(entries.length / 2));
+  const secondHalf = entries.slice(Math.ceil(entries.length / 2));
 
   return (
-    <Box sx={{ width: '100%', alignItems: 'center', display: 'flex', justifyContent: 'center', marginTop: '3rem' }}>
-      <Grid container justifyContent="center">
-        <Grid item xs={12} sm={8} md={6}>
-          <ParentCard title="Add Site">
+    <Box sx={{ width: '30rem' }}>
+      <Grid>
+        <Grid item xs={12} sm={12} md={20}>
+          <ParentCard title="">
             <form onSubmit={handleSubmit}>
               <CustomFormLabel
                 sx={{
@@ -122,32 +146,47 @@ const AddSite: React.FC = () => {
                 value={formData.password}
                 onChange={handleChange}
               />
-              {error && <Alert severity="error" sx={{ mt: 2 }}>{error}</Alert>}
-              <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
-                <Button color="primary" variant="contained" onClick={handleValidate} sx={{ mt: 2 }}>
-                  Validate
-                </Button>
-              </Box>
-              <CustomFormLabel htmlFor="permission">Permission</CustomFormLabel>
-              <Box sx={{ height: '100px', overflowY: 'auto' }}>
-                {Object.entries(data).length !== 0 ? (
-                  Object.entries(data).map(([key, value]) => (
-                    <Box key={key} sx={{ display: 'flex', width: '100%', alignItems: 'center' }}>
-                      {value === 1 ? <DoneIcon color='success' /> : <ClearIcon color='error' />}
-                      <Typography style={{ paddingLeft: "2%" }}>{key}</Typography>
-                    </Box>
-                  ))
-                ) : (
-                  <Typography style={{ fontWeight: 'semibold', fontSize: '10px', marginLeft: '25%', color: 'gray', marginTop: '10%' }}>
-                    Fill the fields to Show the PERMISSIONS
-                  </Typography>
-                )}
-              </Box>
+              {Object.keys(data).length !== 0 ? 
+              <>
+                <CustomFormLabel htmlFor="permission">Permission</CustomFormLabel>
+                <Box>
+                  {entries.length !== 0 ? (
+                    <Grid container spacing={2}>
+                      <Grid item xs={6}>
+                        {firstHalf.map(([key, value]) => (
+                          <Box key={key} sx={{ display: 'flex', alignItems: 'center' }}>
+                            {value === 1 ? <DoneIcon color='success' /> : <ClearIcon color='error' />}
+                            <Typography style={{ paddingLeft: "2%" }}>{key}</Typography>
+                          </Box>
+                        ))}
+                      </Grid>
+                      <Grid item xs={6}>
+                        {secondHalf.map(([key, value]) => (
+                          <Box key={key} sx={{ display: 'flex', alignItems: 'center' }}>
+                            {value === 1 ? <DoneIcon color='success' /> : <ClearIcon color='error' />}
+                            <Typography style={{ paddingLeft: "2%" }}>{key}</Typography>
+                          </Box>
+                        ))}
+                      </Grid>
+                    </Grid>
+                  ) : (
+                    <Typography style={{ fontWeight: 'semibold', fontSize: '10px', marginLeft: '25%', color: 'gray', marginTop: '10%' }}>
+                      Fill the fields to Show the PERMISSIONS
+                    </Typography>
+                  )}
+                </Box>
+              </> : null
+              }
               <div>
-                <Button color="primary" variant="contained" type="submit" sx={{ mt: 2, width: '100%' }}
-                  disabled={Object.values(data).some(value => value !== 1) || !isValidated}>
-                  Submit
-                </Button>
+                {validationStatus === 'valid' ? (
+                  <Button color="primary" variant="contained" type="submit" sx={{ mt: 2, width: '100%' }}>
+                    Submit
+                  </Button>
+                ) : (
+                  <Button color="primary" variant="contained" onClick={handleValidate} sx={{ mt: 2, width: '100%' }}>
+                    Validate
+                  </Button>
+                )}
               </div>
             </form>
           </ParentCard>
@@ -166,6 +205,21 @@ const AddSite: React.FC = () => {
       >
           <Alert onClose={handleSnackbarClose1} severity="error" sx={{ width: '100%' }}>
             {error}
+          </Alert>
+      </Snackbar>
+      <Snackbar
+        open={snackbarOpen3}
+        autoHideDuration={6000}
+        onClose={handleSnackbarClose3}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+        action={
+          <IconButton size="small" aria-label="close" color="inherit" onClick={handleSnackbarClose3}>
+            <CloseIcon fontSize="small" />
+          </IconButton>
+        }
+      >
+          <Alert onClose={handleSnackbarClose3} severity="error" sx={{ width: '100%' }}>
+            Restrictions can be seen for some Documents
           </Alert>
       </Snackbar>
       <Snackbar

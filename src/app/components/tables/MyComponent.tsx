@@ -1,12 +1,25 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import { Box, Grid, FormControl, InputLabel, Select, MenuItem, TextField } from '@mui/material';
 import Button from '@mui/material/Button';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import CustomTextField from '../forms/theme-elements/CustomTextField';
+import { useFrappeGetCall } from 'frappe-react-sdk';
+
 
 
 
 const MyComponent: React.FC = () => {
+  const { data } = useFrappeGetCall('e2t_backend.api.fetch_site');
+  const [sites, setSites] = useState<string[]>([]);
+  const [selectedSite, setSelectedSite] = useState<string>('');
+  useEffect(() => {
+    if (data && data.message && data.message.site) {
+      setSites(data.message.site);
+    }
+  }, [data]);
+  const handleSiteChange = (event: React.ChangeEvent<{ value: unknown }>) => {
+    setSelectedSite(event.target.value as string);
+  };
   return (
     <Box sx={{ width: '100%' }}>
       <Grid container spacing={2} alignItems="center" item xs={10} sm={15} sx={{ paddingLeft: '1rem', paddingTop: '1rem' }}>
@@ -14,15 +27,15 @@ const MyComponent: React.FC = () => {
           <FormControl sx={{ width: '20rem' }}>
             <InputLabel id="demo-simple-select-label">Site</InputLabel>
             <Select
-              labelId="demo-simple-select-label"
-              id="demo-simple-select"
-              // value={age}
-              label="Age"
-            // onChange={handleChange}
+              labelId="site-select-label"
+              id="site-select"
+              value={selectedSite}
+              label="Site"
+              onChange={handleSiteChange}
             >
-              <MenuItem value="Google">Google</MenuItem>
-              <MenuItem value="FierFox">FierFox</MenuItem>
-              <MenuItem value="Erpnext">Erpnext</MenuItem>
+              {sites.map((site, index) => (
+                <MenuItem key={index} value={site}>{site}</MenuItem>
+              ))}
             </Select>
           </FormControl>
         </Grid>

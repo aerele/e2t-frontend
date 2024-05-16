@@ -1,29 +1,31 @@
 "use client";
 import Link from "next/link";
-import { Grid, Box, Stack, Typography, Alert, Button } from "@mui/material";
+import { Grid, Box, Stack, Typography, Snackbar, Alert, Button, IconButton } from "@mui/material";
 import PageContainer from "@/app/components/container/PageContainer";
 import Logo from "@/app/(DashboardLayout)/layout/shared/logo/Logo";
 import AuthLogin from "@/app/authForms/AuthLogin";
 import Image from "next/image";
 import { useState } from "react";
 import { useFrappeAuth } from "frappe-react-sdk";
-import {useRouter} from 'next/navigation'
+import * as React from 'react';
+import CloseIcon from '@mui/icons-material/Close';
+import { useRouter } from 'next/navigation';
 
 export default function Login() {
-	const [username, setUsername] = useState('')
-	const [password, setPassword] = useState('')
+	const [username, setUsername] = useState('');
+	const [password, setPassword] = useState('');
 	const [showAlert, setShowAlert] = useState(false);
+	const [loginDialog, setLoginDialog] = useState(false);
 	const router = useRouter();
 
-	const {
-		login
-	  } = useFrappeAuth();
+	const { login } = useFrappeAuth();
 
 	function onSubmit(): void{
 		login({
 			username:username,
 			password:password
 		  }).then((res) => {
+			setLoginDialog(true);
 		   router.push('/home')
 		  }).catch((err) => {
 			setShowAlert(true)
@@ -31,14 +33,34 @@ export default function Login() {
 		  })
 	}
 
+	const action = (
+		<React.Fragment>
+		  <IconButton
+			size="small"
+			aria-label="close"
+			color="inherit"
+			onClick={() => setShowAlert(false)}
+		  >
+			<CloseIcon fontSize="small" />
+		  </IconButton>
+		</React.Fragment>
+	  );
+	const logdial = (
+		<React.Fragment>
+          <IconButton
+            size="small"
+            aria-label="close"
+            color="inherit"
+            onClick={() => setLoginDialog(false)}
+          >
+            <CloseIcon fontSize="small" />
+          </IconButton>
+        </React.Fragment>
+      );
+
 	return (
 		<PageContainer title="Login Page" description="this is Sample page">
-			<Grid
-				container
-				spacing={0}
-				justifyContent="center"
-				sx={{ height: "100vh" }}
-			>
+			<Grid container spacing={0} justifyContent="center" sx={{ height: "100vh" }}>
 				<Grid
 					item
 					xs={12}
@@ -108,11 +130,7 @@ export default function Login() {
 							}
 							subtitle={
 								<Stack direction="row" spacing={1} mt={3}>
-									<Typography
-										color="textSecondary"
-										variant="h6"
-										fontWeight="500"
-									>
+									<Typography color="textSecondary" variant="h6" fontWeight="500">
 										New to E2T?
 									</Typography>
 									<Typography
@@ -135,23 +153,49 @@ export default function Login() {
 							submit={onSubmit}
 						/>
 						{
-							showAlert ? 
-							<Alert
-								variant="filled"
-								severity="info"
-								color="error"
-
-								action={
-									<Button color="inherit" size="small" onChange={() => setShowAlert(false)}>
-									X
-									</Button>
-								}
+							showAlert && (
+								<Snackbar
+									open={showAlert}
+									autoHideDuration={6000}
+									onClose={() => setShowAlert(false)}
+									anchorOrigin={{
+                                        vertical: "bottom",
+                                        horizontal: "left",
+                                    }}
 								>
-								Username or Password may be Incorrcet
-							</Alert> : <></>
+									<Alert 
+										severity="error"
+										action={action}
+										sx={{ width: '100%' }}
+									>
+										Username or password incorrect
+									</Alert>
+								</Snackbar>
+							)
+						}
+						{
+							loginDialog && (
+                                <Snackbar
+                                    open={loginDialog}
+                                    autoHideDuration={6000}
+                                    onClose={() => setLoginDialog(false)}
+                                    anchorOrigin={{
+                                        vertical: "bottom",
+                                        horizontal: "left",
+                                    }}
+                                >
+                                    <Alert 
+                                        severity="success"
+                                        action={logdial}
+                                        sx={{ width: '100%' }}
+                                    >
+                                        Login Successfully
+                                    </Alert>
+                                </Snackbar>
+                            )
 						}
 					</Box>
-				</Grid>	
+				</Grid>
 			</Grid>
 		</PageContainer>
 	);
