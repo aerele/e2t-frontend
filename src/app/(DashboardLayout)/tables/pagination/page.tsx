@@ -26,6 +26,7 @@ import PageContainer from '@/app/components/container/PageContainer';
 
 import ParentCard from '@/app/components/shared/ParentCard';
 import BlankCard from '@/app/components/shared/BlankCard';
+import { useFrappeGetDocCount } from 'frappe-react-sdk';
 
 interface TablePaginationActionsProps {
   count: number;
@@ -183,6 +184,8 @@ const PaginationTable = () => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
+
+  // const {data} = useFrappeGetDocCount("Sales Order", filters?: {  } )
 
   return (
     <PageContainer title="Export to Tally" description="this is Pagination Table">
