@@ -16,8 +16,11 @@ interface FormData {
   email: string;
   password: string;
 }
+interface AddSiteProps {
+  handleClose: () => void;
+} 
 
-const AddSite: React.FC = () => {
+const AddSite: React.FC<AddSiteProps> = ({ handleClose }) => {
   const [formData, setFormData] = useState<FormData>({
     url: '',
     email: '',
@@ -73,6 +76,7 @@ const AddSite: React.FC = () => {
       console.log('Form data:', formData);
       addSite({ data: JSON.stringify(formData) });
       setSnackbarOpen2(true);
+      handleClose();
     }
   };
 
