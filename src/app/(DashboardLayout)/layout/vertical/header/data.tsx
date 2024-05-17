@@ -150,7 +150,7 @@ interface notificationType {
       title: "Pricing Page",
     },
     {
-      href: "/auth/auth1/login",
+      href: "/login",
       title: "Authentication Design",
     },
     {

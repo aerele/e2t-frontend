@@ -3,12 +3,63 @@ import Link from "next/link";
 import { Grid, Box, Typography, Stack } from "@mui/material";
 import PageContainer from "@/app/components/container/PageContainer";
 import Logo from "@/app/(DashboardLayout)/layout/shared/logo/Logo";
+import { useContext, useEffect, useState } from 'react'
 import AuthRegister from "@/app/authForms/AuthRegister";
 import Image from "next/image";
+import { useFrappePostCall } from 'frappe-react-sdk'
+import { Toaster, toast } from "sonner"
+import { useRouter } from "next/navigation"
 
 export default function Register() {
+
+  const [name, setName] = useState('')
+  const [email, setEmail] = useState('')
+	const [password, setPassword] = useState('')
+  const [confirmPassword, setConfirmPassword] = useState('')
+  const [isSubmitted, setisSubmitted] = useState(false)
+  const { call: signup } = useFrappePostCall('e2t_backend.authentication.authenticate.sign_up')
+  const router = useRouter();
+    
+  useEffect(() => {{
+    if (isSubmitted){
+      if (password !== confirmPassword) {
+        toast.error("Passwords do not match");
+        setisSubmitted(false);
+        return;
+      }  
+      signup({
+        email: email,
+        full_name: name,
+        password: password
+      }).then((res) => {
+        if(res && res.message){
+          if (res.message.status){
+            toast.success(res.message.msg)
+            setisSubmitted(!isSubmitted)
+            router.push('/login')         
+           }
+        }
+      }).catch((e) => {
+        if (e.hasOwnProperty('_server_messages')){
+          const serverMessages = JSON.parse(e._server_messages);
+          if (serverMessages){
+            const serverErrorMessage=JSON.parse(serverMessages);
+            toast.error(serverErrorMessage.message)
+            setisSubmitted(!isSubmitted)
+          }
+        }
+    })
+  }
+  }
+}, [isSubmitted])
+
+  function onSubmit(): void{
+    setisSubmitted(!isSubmitted)
+  }
+
   return (
   <PageContainer title="Register Page" description="this is Sample page">
+    <Toaster richColors></Toaster>
     <Grid
       container
       spacing={0}
@@ -86,7 +137,7 @@ export default function Register() {
                 </Typography>
                 <Typography
                   component={Link}
-                  href="/"
+                  href="/login"
                   fontWeight="500"
                   sx={{
                     textDecoration: "none",
@@ -97,6 +148,15 @@ export default function Register() {
                 </Typography>
               </Stack>
             }
+            name={name}
+            email={email}
+            password={password}
+            confirmPassword={confirmPassword}
+            setName={setName}
+            setEmail={setEmail}
+            setPassword={setPassword}
+            setConfirmPassword={setConfirmPassword}
+            submit={onSubmit}
           />
         </Box>
       </Grid>

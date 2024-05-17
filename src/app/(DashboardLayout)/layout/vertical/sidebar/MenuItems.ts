@@ -71,86 +71,38 @@ const Menuitems: MenuitemsType[] = [
     navlabel: true,
     subheader: "Home",
   },
-
-  {
-    id: uniqueId(),
-    title: "Home",
-    icon: IconAperture,
-    href: "/",
-    chipColor: "secondary",
-  },
   {
     id: uniqueId(),
     title: "Connected Sites",
     icon: IconShoppingCart,
     chip: "2",
     chipColor: "secondary",
-    href: "/dashboards/ecommerce",
+    href: "/home",
   },
   {
     id: uniqueId(),
     title: "Export to Tally",
     icon: IconPackage,
-    href: "/apps/contacts",
+    href: "/erp2tally",
   },
 
   {
     id: uniqueId(),
-    title: "Invoices",
+    title: "Transactions",
     icon: IconChartDonut3,
-    href: "/apps/blog/",
-    children: [
-      {
-        id: uniqueId(),
-        title: "Posts",
-        icon: IconPoint,
-        href: "/apps/blog/post",
-      },
-      {
-        id: uniqueId(),
-        title: "Detail",
-        icon: IconPoint,
-        href: "/apps/blog/detail/streaming-video-way-before-it-was-cool-go-dark-tomorrow",
-      },
-    ],
+    href: "/payment-page",
   },
   {
     id: uniqueId(),
     title: "Support",
     icon: IconBasket,
     href: "/apps/ecommerce/",
-    children: [
-      {
-        id: uniqueId(),
-        title: "Shop",
-        icon: IconPoint,
-        href: "/apps/ecommerce/shop",
-      },
-      {
-        id: uniqueId(),
-        title: "Detail",
-        icon: IconPoint,
-        href: "/apps/ecommerce/detail/1",
-      },
-      {
-        id: uniqueId(),
-        title: "List",
-        icon: IconPoint,
-        href: "/apps/ecommerce/list",
-      },
-      {
-        id: uniqueId(),
-        title: "Checkout",
-        icon: IconPoint,
-        href: "/apps/ecommerce/checkout",
-      },
-    ],
   },
   {
     id: uniqueId(),
     title: "About",
     icon: IconMessage2,
-    href: "/apps/chats",
+    href: "/",
   },
   
 ];

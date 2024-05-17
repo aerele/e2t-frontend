@@ -47,7 +47,7 @@ export default function RootLayout({
       {/* ------------------------------------------- */}
       {/* Sidebar */}
       {/* ------------------------------------------- */}
-      {customizer.isHorizontal ? "" : <Sidebar />}
+      {/* {customizer.isHorizontal ? "" : <Sidebar />} */}
       {/* ------------------------------------------- */}
       {/* Main Wrapper */}
       {/* ------------------------------------------- */}
@@ -64,9 +64,9 @@ export default function RootLayout({
         {/* ------------------------------------------- */}
         {/* Header */}
         {/* ------------------------------------------- */}
-        {customizer.isHorizontal ? <HorizontalHeader /> : <Header />}
+        {/* {customizer.isHorizontal ? <HorizontalHeader /> : <Header />} */}
         {/* PageContent */}
-        {customizer.isHorizontal ? <Navigation /> : ""}
+        {/* {customizer.isHorizontal ? <Navigation /> : ""} */}
         <Container
           sx={{
             maxWidth: customizer.isLayout === "boxed" ? "lg" : "100%!important",
