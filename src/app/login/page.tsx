@@ -1,66 +1,83 @@
 "use client";
-import Link from "next/link";
-import { Grid, Box, Stack, Typography, Snackbar, Alert, Button, IconButton } from "@mui/material";
-import PageContainer from "@/app/components/container/PageContainer";
 import Logo from "@/app/(DashboardLayout)/layout/shared/logo/Logo";
 import AuthLogin from "@/app/authForms/AuthLogin";
+import PageContainer from "@/app/components/container/PageContainer";
+import CloseIcon from "@mui/icons-material/Close";
+import { Box, Grid, IconButton, Stack, Typography } from "@mui/material";
+import { useFrappeAuth, useFrappePostCall } from "frappe-react-sdk";
 import Image from "next/image";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import * as React from "react";
 import { useState } from "react";
-import { useFrappeAuth } from "frappe-react-sdk";
-import * as React from 'react';
-import CloseIcon from '@mui/icons-material/Close';
-import { useRouter } from 'next/navigation';
+import { Toaster, toast } from "sonner";
+import { useDispatch } from "@/store/hooks";
+import {
+	setFullname,
+	setEmail,
+	setImage,
+	setTimezone,
+} from "@/store/apps/userProfile/UserProfileSlice";
 
 export default function Login() {
-	const [username, setUsername] = useState('');
-	const [password, setPassword] = useState('');
-	const [showAlert, setShowAlert] = useState(false);
-	const [loginDialog, setLoginDialog] = useState(false);
+	const [username, setUsername] = useState("");
+	const [password, setPassword] = useState("");
 	const router = useRouter();
+	const dispatch = useDispatch();
 
 	const { login } = useFrappeAuth();
+	const { call } = useFrappePostCall(
+		"e2t_backend.api.user_details.get_user_details"
+	);
 
-	function onSubmit(): void{
+	function onSubmit(): void {
 		login({
-			username:username,
-			password:password
-		  }).then((res) => {
-			setLoginDialog(true);
-		   router.push('/home')
-		  }).catch((err) => {
-			setShowAlert(true)
-			console.log(err)
-		  })
+			username: username,
+			password: password,
+		})
+			.then((res) => {
+				toast.success("Successfully Logged In");
+				// dispatch(fetchUserDetails());
+				call({})
+					.then((res) => {
+						dispatch(setFullname(res.message.fullname))
+						dispatch(setEmail(res.message.email))
+						dispatch(setImage(res.message.image))
+						dispatch(setTimezone(res.message.time_zone))
+					})
+					.catch((err) => toast.error("Something went wrong!"));
+				router.push("/home");
+			})
+			.catch((err) => {
+				toast.error("Incorrect Username or Password");
+				console.log(err);
+			});
 	}
 
 	const action = (
 		<React.Fragment>
-		  <IconButton
-			size="small"
-			aria-label="close"
-			color="inherit"
-			onClick={() => setShowAlert(false)}
-		  >
-			<CloseIcon fontSize="small" />
-		  </IconButton>
+			<IconButton size="small" aria-label="close" color="inherit">
+				<CloseIcon fontSize="small" />
+			</IconButton>
 		</React.Fragment>
-	  );
+	);
 	const logdial = (
 		<React.Fragment>
-          <IconButton
-            size="small"
-            aria-label="close"
-            color="inherit"
-            onClick={() => setLoginDialog(false)}
-          >
-            <CloseIcon fontSize="small" />
-          </IconButton>
-        </React.Fragment>
-      );
+			<IconButton size="small" aria-label="close" color="inherit">
+				<CloseIcon fontSize="small" />
+			</IconButton>
+		</React.Fragment>
+	);
 
 	return (
-		<PageContainer title="Login Page" description="this is Sample page">
-			<Grid container spacing={0} justifyContent="center" sx={{ height: "100vh" }}>
+		<PageContainer title="Login Page" description="">
+			<Toaster richColors></Toaster>
+			<Grid
+				container
+				spacing={0}
+				justifyContent="center"
+				sx={{ height: "100vh" }}
+			>
 				<Grid
 					item
 					xs={12}
@@ -130,7 +147,11 @@ export default function Login() {
 							}
 							subtitle={
 								<Stack direction="row" spacing={1} mt={3}>
-									<Typography color="textSecondary" variant="h6" fontWeight="500">
+									<Typography
+										color="textSecondary"
+										variant="h6"
+										fontWeight="500"
+									>
 										New to E2T?
 									</Typography>
 									<Typography
@@ -152,48 +173,6 @@ export default function Login() {
 							setPassword={setPassword}
 							submit={onSubmit}
 						/>
-						{
-							showAlert && (
-								<Snackbar
-									open={showAlert}
-									autoHideDuration={6000}
-									onClose={() => setShowAlert(false)}
-									anchorOrigin={{
-                                        vertical: "bottom",
-                                        horizontal: "left",
-                                    }}
-								>
-									<Alert 
-										severity="error"
-										action={action}
-										sx={{ width: '100%' }}
-									>
-										Username or password incorrect
-									</Alert>
-								</Snackbar>
-							)
-						}
-						{
-							loginDialog && (
-                                <Snackbar
-                                    open={loginDialog}
-                                    autoHideDuration={6000}
-                                    onClose={() => setLoginDialog(false)}
-                                    anchorOrigin={{
-                                        vertical: "bottom",
-                                        horizontal: "left",
-                                    }}
-                                >
-                                    <Alert 
-                                        severity="success"
-                                        action={logdial}
-                                        sx={{ width: '100%' }}
-                                    >
-                                        Login Successfully
-                                    </Alert>
-                                </Snackbar>
-                            )
-						}
 					</Box>
 				</Grid>
 			</Grid>

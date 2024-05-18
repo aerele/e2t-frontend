@@ -9,7 +9,7 @@ import { useFrappeGetCall } from 'frappe-react-sdk';
 
 
 const MyComponent: React.FC = () => {
-  const { data } = useFrappeGetCall('e2t_backend.api.fetch_site');
+  const { data } = useFrappeGetCall('e2t_backend.api.site_details.fetch_site');
   const [sites, setSites] = useState<string[]>([]);
   const [selectedSite, setSelectedSite] = useState<string>('');
   useEffect(() => {

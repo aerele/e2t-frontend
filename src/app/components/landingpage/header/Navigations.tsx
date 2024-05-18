@@ -44,7 +44,7 @@ const Navigations = () => {
 
     return (
         <>
-            
+
             {open && (
                 <Paper
                     onMouseEnter={handleOpen}
@@ -91,9 +91,9 @@ const Navigations = () => {
                     </Paper>
                 )}
             </Box>
-            <StyledButton color="inherit" variant="text" href="https://demos.adminmart.com/premium/nextjs/modernize-nextjs/docs/index.html">
+            {/* <StyledButton color="inherit" variant="text" href="https://demos.adminmart.com/premium/nextjs/modernize-nextjs/docs/index.html">
                 Documentation
-            </StyledButton>
+            </StyledButton> */}
             <StyledButton color="inherit" variant="text" href="https://aerele.in/contact/">
                 Support
             </StyledButton>
