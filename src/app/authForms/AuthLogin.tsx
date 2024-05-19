@@ -52,7 +52,19 @@ const AuthLogin = ({
 		<Stack>
 			<Box>
 				<CustomFormLabel htmlFor="username">Username</CustomFormLabel>
-				<CustomTextField id="username" variant="outlined" fullWidth  value={username} onChange={(e:any)=>{setUsername(e.target.value)}}/>
+				<CustomTextField
+					id="username"
+					variant="outlined"
+					fullWidth
+					value={username}
+					onChange={(e: any) => {
+						setUsername(e.target.value);
+					}}
+					onKeyDown={(e:any) => {
+						if (e.key === "Enter") submit();
+
+					}}
+				/>
 			</Box>
 			<Box>
 				<CustomFormLabel htmlFor="password">Password</CustomFormLabel>
@@ -61,7 +73,14 @@ const AuthLogin = ({
 					type="password"
 					variant="outlined"
 					fullWidth
-					value={password} onChange={(e:any)=>setPassword(e.target.value)}
+					value={password}
+					onChange={(e: any) => {
+						setPassword(e.target.value);
+					}}
+					onKeyDown={(e:any) => {
+						if (e.key === "Enter") submit();
+
+					}}
 				/>
 			</Box>
 			<Stack
@@ -96,7 +115,7 @@ const AuthLogin = ({
 				size="large"
 				fullWidth
 				type="submit"
-				onClick = {submit}
+				onClick={submit}
 			>
 				Sign In
 			</Button>

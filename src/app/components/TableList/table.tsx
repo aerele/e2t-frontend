@@ -78,7 +78,7 @@ const headCells: readonly HeadCell[] = [
   { id: 'name', numeric: false, disablePadding: false, label: 'URL' },
   { id: 'pname', numeric: false, disablePadding: false, label: 'User' },
   { id: 'status', numeric: false, disablePadding: false, label: 'Status' },
-  { id: 'price', numeric: false, disablePadding: false, label: 'Permissions' },
+//   { id: 'price', numeric: false, disablePadding: false, label: 'Permissions' },
   { id: 'action', numeric: false, disablePadding: false, label: 'Action' },
 ];
 
@@ -251,12 +251,11 @@ const ProductTableList = () => {
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
 
-  const { data, error, mutate: refetch_data, isValidating, isLoading } = useFrappeGetDocList("Site Details", { fields: ['url', 'email'] })
+  const { data, error, mutate: refetch_data, isValidating, isLoading } = useFrappeGetDocList("Site Details", { fields: ['domain as url', 'email', "disable"] })
   const {deleteDoc, isCompleted, loading, reset} = useFrappeDeleteDoc()
   const [sites, setSites] = useState<any[]>([]);
   useEffect(() => {
     if (data) {
-      console.log("---------------------------", data);
       setSites(data)
     }
   }, [data])
@@ -419,7 +418,7 @@ const ProductTableList = () => {
                           <Box display="flex" alignItems="center">
                             <Box
                               sx={{
-                                backgroundColor: row.stock
+                                backgroundColor: !row.disable
                                   ? theme.palette.success.main
                                   : theme.palette.error.main,
                                 borderRadius: '100%',
@@ -432,12 +431,12 @@ const ProductTableList = () => {
                               variant="subtitle2"
                               sx={{ ml: 1 }}
                             >
-                              {row.stock ? 'Active' : 'Inactive'}
+                              {!row.disable ? 'Active' : 'Inactive'}
                             </Typography>
                           </Box>
                         </TableCell>
-                        <TableCell>
-                        </TableCell>
+                        {/* <TableCell>
+                        </TableCell> */}
                         <TableCell>
                           <IconButton onClick={() => handleDelete(row.url)}>
                             <IconTrash size="1.2rem" />

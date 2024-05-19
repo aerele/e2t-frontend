@@ -31,6 +31,10 @@ export default function Login() {
 	);
 
 	function onSubmit(): void {
+		if (!(username && password)) {
+			toast.error("Enter Username and Password");
+			return;
+		}
 		login({
 			username: username,
 			password: password,
@@ -40,34 +44,19 @@ export default function Login() {
 				// dispatch(fetchUserDetails());
 				call({})
 					.then((res) => {
-						dispatch(setFullname(res.message.fullname))
-						dispatch(setEmail(res.message.email))
-						dispatch(setImage(res.message.image))
-						dispatch(setTimezone(res.message.time_zone))
+						dispatch(setFullname(res.message.fullname));
+						dispatch(setEmail(res.message.email));
+						dispatch(setImage(res.message.image));
+						dispatch(setTimezone(res.message.time_zone));
 					})
-					.catch((err) => toast.error("Something went wrong!"));
+					.catch((err) => toast.error(err.message));
 				router.push("/home");
 			})
 			.catch((err) => {
-				toast.error("Incorrect Username or Password");
-				console.log(err);
+				debugger
+				toast.error(err.message);
 			});
 	}
-
-	const action = (
-		<React.Fragment>
-			<IconButton size="small" aria-label="close" color="inherit">
-				<CloseIcon fontSize="small" />
-			</IconButton>
-		</React.Fragment>
-	);
-	const logdial = (
-		<React.Fragment>
-			<IconButton size="small" aria-label="close" color="inherit">
-				<CloseIcon fontSize="small" />
-			</IconButton>
-		</React.Fragment>
-	);
 
 	return (
 		<PageContainer title="Login Page" description="">
