@@ -251,7 +251,7 @@ const ProductTableList = () => {
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
 
-  const { data, error, mutate: refetch_data, isValidating, isLoading } = useFrappeGetDocList("Site Details", { fields: ['domain as url', 'email', "disable"] })
+  const { data, error, mutate: refetch_data, isValidating, isLoading } = useFrappeGetDocList("Site Details", { fields: ['name', 'domain as url', 'email', "disable"] })
   const {deleteDoc, isCompleted, loading, reset} = useFrappeDeleteDoc()
   const [sites, setSites] = useState<any[]>([]);
   useEffect(() => {
@@ -438,7 +438,7 @@ const ProductTableList = () => {
                         {/* <TableCell>
                         </TableCell> */}
                         <TableCell>
-                          <IconButton onClick={() => handleDelete(row.url)}>
+                          <IconButton onClick={() => handleDelete(row.name)}>
                             <IconTrash size="1.2rem" />
                           </IconButton>
                         </TableCell>
