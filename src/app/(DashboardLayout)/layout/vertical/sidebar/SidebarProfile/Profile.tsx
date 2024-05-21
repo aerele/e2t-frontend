@@ -15,7 +15,7 @@ export const Profile = () => {
       display={'flex'}
       alignItems="center"
       gap={2}
-      sx={{ m: 3, p: 2, bgcolor: `${'secondary.light'}` }}
+      sx={{ m: 1.5, p: 2, bgcolor: `${'secondary.light'}` }}
     >
       {!hideMenu ? (
         <>

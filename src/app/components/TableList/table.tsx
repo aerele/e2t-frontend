@@ -119,14 +119,14 @@ function EnhancedTableHead(props: EnhancedTableProps) {
   return (
     <TableHead>
       <TableRow>
-        <TableCell padding="checkbox">
+        {/* <TableCell padding="checkbox">
           <CustomCheckbox
             color="primary"
             checked={rowCount > 0 && numSelected === rowCount}
             onChange={onSelectAllClick}
             inputProps={{ 'aria-label': 'select all desserts' }}
           />
-        </TableCell>
+        </TableCell> */}
         {headCells.map((headCell) => (
           <TableCell
             key={headCell.id}
@@ -164,6 +164,7 @@ const EnhancedTableToolbar = (props: EnhancedTableToolbarProps) => {
   const [dialog, setDialog] = useState(false);
   const handleClose = () => {
     setDialog(false);
+    window.location.reload();
   };
 
   return (
@@ -262,9 +263,9 @@ const ProductTableList = () => {
 
   const handleDelete = async (siteId: any) => {
     try {
-      deleteDoc("Site Details", siteId)
+      await deleteDoc("Site Details", siteId)
       console.log('Completed',isCompleted)
-      refetch_data();
+      await refetch_data();
     } catch (error) {
       console.error('Error deleting site:', error);
     }
@@ -381,28 +382,24 @@ const ProductTableList = () => {
 
                     return (
                       <TableRow
-                        hover
-                        onClick={(event) => handleClick(event, row.url)}
-                        role="checkbox"
-                        aria-checked={isItemSelected}
-                        tabIndex={-1}
-                        key={row.url}
-                        selected={isItemSelected}
+                        // hover
+                        // onClick={(event) => handleClick(event, row.url)}
+                        // role="checkbox"
+                        // aria-checked={isItemSelected}
+                        // tabIndex={-1}
+                        // key={row.url}
+                        // selected={isItemSelected}
                       >
-                        <TableCell padding="checkbox">
+                        {/* <TableCell padding="checkbox">
                           <CustomCheckbox
                             color="primary"
                             checked={isItemSelected}
                             inputProps={{ 'aria-labelledby': labelId }}
                           />
-                        </TableCell>
+                        </TableCell> */}
                         <TableCell>
                           <Box display="flex" alignItems="center">
-                            <Box
-                              sx={{
-                                ml: 2,
-                              }}
-                            >
+                            <Box>
                               <Link href="/erp2tally" passHref>
                                 <Typography component="a">
                                   {row.url}
