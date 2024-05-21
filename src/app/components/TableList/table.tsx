@@ -435,8 +435,6 @@ const ProductTableList = () => {
                             </Typography>
                           </Box>
                         </TableCell>
-                        {/* <TableCell>
-                        </TableCell> */}
                         <TableCell>
                           <IconButton onClick={() => handleDelete(row.name)}>
                             <IconTrash size="1.2rem" />

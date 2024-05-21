@@ -88,6 +88,7 @@ const AddSite: React.FC<AddSiteProps> = ({ handleClose }) => {
 			addSite({ data: JSON.stringify(formData) }).then(()=>{
 
 				toast.success("Site Added Successfully");
+				handleClose();
 			}).catch(()=>{
 				toast.error("Something went wrong, please try again!")
 			});
