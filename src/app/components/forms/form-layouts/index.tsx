@@ -7,6 +7,7 @@ import FbLeftIconForm from './FbLeftIconForm';
 import FbRightIconForm from './FbRightIconForm';
 import FbInputVariants from './FbInputVariants';
 import AddSite from './AddSite';
+import ValidateSite from './ValidateSite';
 
 
 export {
@@ -19,4 +20,5 @@ export {
   FbRightIconForm,
   FbInputVariants,
   AddSite,
+  ValidateSite,
 };
