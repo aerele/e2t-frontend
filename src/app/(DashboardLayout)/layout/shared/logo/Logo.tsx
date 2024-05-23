@@ -26,7 +26,7 @@ const Logo = () => {
           />
         ) : (
           <Image
-            src={"/images/logos/dark-logo.svg"}
+            src="/images/logos/aerele_logo.png"
             alt="logo"
             height={customizer.TopbarHeight}
             width={174}

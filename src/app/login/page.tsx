@@ -1,37 +1,66 @@
 "use client";
-import Link from "next/link";
-import { Grid, Box, Stack, Typography } from "@mui/material";
-import PageContainer from "@/app/components/container/PageContainer";
 import Logo from "@/app/(DashboardLayout)/layout/shared/logo/Logo";
 import AuthLogin from "@/app/authForms/AuthLogin";
+import PageContainer from "@/app/components/container/PageContainer";
+import CloseIcon from "@mui/icons-material/Close";
+import { Box, Grid, IconButton, Stack, Typography } from "@mui/material";
+import { useFrappeAuth, useFrappePostCall } from "frappe-react-sdk";
 import Image from "next/image";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import * as React from "react";
 import { useState } from "react";
-import { useFrappeAuth } from "frappe-react-sdk";
+import { Toaster, toast } from "sonner";
+import { useDispatch } from "@/store/hooks";
+import {
+	setFullname,
+	setEmail,
+	setImage,
+	setTimezone,
+} from "@/store/apps/userProfile/UserProfileSlice";
 
 export default function Login() {
-	const [username, setUsername] = useState('')
-	const [password, setPassword] = useState('')
+	const [username, setUsername] = useState("");
+	const [password, setPassword] = useState("");
+	const router = useRouter();
+	const dispatch = useDispatch();
 
-	const {
-		login
-	  } = useFrappeAuth();
+	const { login } = useFrappeAuth();
+	const { call } = useFrappePostCall(
+		"e2t_backend.api.user_details.get_user_details"
+	);
 
-	function onSubmit(): void{
-		debugger
+	function onSubmit(): void {
+		if (!(username && password)) {
+			toast.error("Enter Username and Password");
+			return;
+		}
 		login({
-			username:username,
-			password:password
-		  }).then((res) => {
-		    alert(res)
-			console.log(res)
-		  }).catch((err) => {
-		    alert(err)
-			console.log(err)
-		  })
+			username: username,
+			password: password,
+		})
+			.then((res) => {
+				toast.success("Successfully Logged In");
+				// dispatch(fetchUserDetails());
+				call({})
+					.then((res) => {
+						dispatch(setFullname(res.message.fullname));
+						dispatch(setEmail(res.message.email));
+						dispatch(setImage(res.message.image));
+						dispatch(setTimezone(res.message.time_zone));
+					})
+					.catch((err) => toast.error(err.message));
+				router.push("/home");
+			})
+			.catch((err) => {
+				debugger
+				toast.error(err.message);
+			});
 	}
 
 	return (
-		<PageContainer title="Login Page" description="this is Sample page">
+		<PageContainer title="Login Page" description="">
+			<Toaster richColors></Toaster>
 			<Grid
 				container
 				spacing={0}
@@ -99,7 +128,7 @@ export default function Login() {
 				>
 					<Box p={4}>
 						<AuthLogin
-							title="Welcome to Modernize"
+							title="Welcome to E2T"
 							subtext={
 								<Typography variant="subtitle1" color="textSecondary" mb={1}>
 									Your Admin Dashboard
@@ -112,11 +141,11 @@ export default function Login() {
 										variant="h6"
 										fontWeight="500"
 									>
-										New to Modernize?
+										New to E2T?
 									</Typography>
 									<Typography
 										component={Link}
-										href="/auth/auth1/register"
+										href="/register"
 										fontWeight="500"
 										sx={{
 											textDecoration: "none",

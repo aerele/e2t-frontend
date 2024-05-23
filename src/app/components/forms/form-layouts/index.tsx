@@ -6,6 +6,8 @@ import FbDisabledForm from './FbDisabledForm';
 import FbLeftIconForm from './FbLeftIconForm';
 import FbRightIconForm from './FbRightIconForm';
 import FbInputVariants from './FbInputVariants';
+import AddSite from './AddSite';
+
 
 export {
   FbOrdinaryForm,
@@ -16,4 +18,5 @@ export {
   FbLeftIconForm,
   FbRightIconForm,
   FbInputVariants,
+  AddSite,
 };
