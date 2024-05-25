@@ -41,7 +41,7 @@ export default function ResetPassword() {
 					}, 2000);
 				}
 				if(r.message){
-					toast.success(r.message)
+					toast.success("Password Updated")
 					setTimeout(() => {
 						router.push('/login');
 					}, 2000);

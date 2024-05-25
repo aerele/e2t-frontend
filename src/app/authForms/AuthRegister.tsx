@@ -13,11 +13,13 @@ const AuthRegister: React.FC<registerType> = ({
   subtext,
   name,
   email,
+  mobileno,
   password,
   confirmPassword,
   setName,
   setEmail,
   setPassword,
+  setMobileno,
   setConfirmPassword,
   submit
 }) => {
@@ -54,14 +56,16 @@ const AuthRegister: React.FC<registerType> = ({
       <Box>
         <Stack mb={3}>
           <CustomFormLabel htmlFor="name">Name</CustomFormLabel>
-          <CustomTextField id="name" variant="outlined" fullWidth value={name} onChange={(e) => setName(e.target.value)} />
+          <CustomTextField id="name" variant="outlined" fullWidth value={name} onChange={(e:any)=>{setName(e.target.value)}} />
           <CustomFormLabel htmlFor="email">Email Adddress</CustomFormLabel>
-          <CustomTextField id="email" variant="outlined" fullWidth value={email} onChange={(e) => setEmail(e.target.value)} />
+          <CustomTextField id="email" variant="outlined" fullWidth value={email} onChange={(e:any)=>{setEmail(e.target.value)}} />
+          <CustomFormLabel htmlFor="mobileno">Mobile No</CustomFormLabel>
+          <CustomTextField id="mobileno" variant="outlined" fullWidth value={mobileno} onChange={(e:any)=>{setMobileno(e.target.value)}} />
           <CustomFormLabel htmlFor="password">Password</CustomFormLabel>
           <CustomTextField id="password" type="password" variant="outlined" fullWidth value={password} onChange={handlePasswordChange} />
           <PasswordStrengthBar password={password} />
           <CustomFormLabel htmlFor="confirmPassword">Confirm Password</CustomFormLabel>
-          <CustomTextField id="confirmPassword" type="password" variant="outlined" fullWidth value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} />
+          <CustomTextField id="confirmPassword" type="password" variant="outlined" fullWidth value={confirmPassword} onChange={(e:any)=>{setConfirmPassword(e.target.value)}} />
         </Stack>
         <Button
           color="primary"
