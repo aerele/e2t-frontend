@@ -53,7 +53,6 @@ export default function Login() {
 				router.push("/home");
 			})
 			.catch((err) => {
-				debugger
 				toast.error(err.message);
 			});
 	}
