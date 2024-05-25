@@ -84,7 +84,6 @@ const AddSite: React.FC<AddSiteProps> = ({ handleClose }) => {
 	const handleSubmit = (e: React.FormEvent) => {
 		e.preventDefault();
 		if (Object.values(data).every((val) => val === 1)) {
-			console.log("Form data:", formData);
 			addSite({ data: JSON.stringify(formData) }).then(()=>{
 
 				toast.success("Site Added Successfully");
