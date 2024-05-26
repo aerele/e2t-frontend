@@ -13,8 +13,31 @@ import { useFrappeGetDocList, useFrappePostCall } from "frappe-react-sdk";
 import React, { useEffect, useState } from "react";
 import CustomTextField from "../forms/theme-elements/CustomTextField";
 import { Toaster, toast } from "sonner";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import dayjs from "dayjs";
+import { SelectChangeEvent } from "@mui/material/Select";
 
-const MyComponent: React.FC = () => {
+interface siteType {
+	name: string;
+	url: string;
+	email: string;
+}
+interface companiesType {
+	name: string;
+}
+interface fiscalYearsType {
+	name: string;
+	year_start_date: string;
+	year_end_date: string;
+}
+
+interface FetchCountProps {
+	fetchCount: (site: string, company: string, fiscalYear: string, fromDate: string, toDate: string) => void;
+  }
+
+  const MyComponent: React.FC<FetchCountProps> = ({ fetchCount }) => {
 	const {
 		data,
 		error,
@@ -25,8 +48,12 @@ const MyComponent: React.FC = () => {
 		fields: ["name", "domain as url", "email"],
 		filters: [["disable", "=", 0]],
 	});
-	const [sites, setSites] = useState<string[]>([]);
-	const [companies, setCompanies] = useState<string[]>([]);
+	const [sites, setSites] = useState<siteType[]>([]);
+	const [companies, setCompanies] = useState<companiesType[]>([]);
+	const [fiscalYears, setFiscalYears] = useState<fiscalYearsType[]>([]);
+	const [minDate, setMinDate] = useState<String>('');
+	const [maxDate, setMaxDate] = useState<String>('');
+
 	const [selectedSite, setSelectedSite] = useState<string>("");
 	const [selectedCompany, setSelectedCompany] = useState<string>("");
 	const [selectedFiscalYear, setSelectedFiscalYear] = useState<string>("");
@@ -35,6 +62,9 @@ const MyComponent: React.FC = () => {
 
 	const { call: getCompany } = useFrappePostCall(
 		"e2t_backend.api.export_details.get_company"
+	);
+	const { call: getFiscalYear } = useFrappePostCall(
+		"e2t_backend.api.export_details.get_fiscal_year"
 	);
 	useEffect(() => {
 		if (data) {
@@ -47,20 +77,39 @@ const MyComponent: React.FC = () => {
 				site: selectedSite,
 			})
 				.then((res) => {
-					if (res.message) setCompanies(res.message.data);
+					if (res.message) setCompanies(res.message);
 				})
 				.catch((err) => {
 					toast.error(err.message);
 				});
 	}, [selectedSite]);
-	const handleSiteChange = (event: React.ChangeEvent<{ value: unknown }>) => {
+	useEffect(() => {
+		if (selectedCompany)
+			getFiscalYear({
+				site: selectedSite,
+				company: selectedCompany,
+			})
+				.then((res) => {
+					if (res.message) setFiscalYears(res.message);
+				})
+				.catch((err) => {
+					toast.error(err.message);
+				});
+	}, [selectedCompany]);
+
+	const handleSiteChange = (event: SelectChangeEvent<string>) => {
 		setSelectedSite(event.target.value as string);
 	};
-	const handleCompanyChange = (
-		event: React.ChangeEvent<{ value: unknown }>
-	) => {
+	const handleCompanyChange = (event: SelectChangeEvent<string>) => {
 		setSelectedCompany(event.target.value as string);
 	};
+	const handleFiscalYearChange = (
+		event: SelectChangeEvent<string>
+	) => {
+		setSelectedFiscalYear(event.target.value as string);
+	};
+
+
 	return (
 		<div>
 			<Toaster richColors></Toaster>
@@ -94,7 +143,7 @@ const MyComponent: React.FC = () => {
 									onChange={handleSiteChange}
 								>
 									{sites.map((site, index) => (
-										<MenuItem key={index} value={site.name}>
+										<MenuItem key={index} value={site?.name}>
 											{`${site.url} (${site.email})`}
 										</MenuItem>
 									))}
@@ -105,7 +154,7 @@ const MyComponent: React.FC = () => {
 							<FormControl sx={{ width: "20rem" }}>
 								<InputLabel
 									id="demo-simple-select-label"
-									{...{ disabled: companies != "" ? false : true }}
+									{...{ disabled: companies.length != 0 ? false : true }}
 								>
 									Company
 								</InputLabel>
@@ -115,12 +164,12 @@ const MyComponent: React.FC = () => {
 									// value={age}
 									label="Company"
 									autoWidth
-									{...{ disabled: companies != "" ? false : true }}
+									{...{ disabled: companies.length != 0 ? false : true }}
 									onChange={handleCompanyChange}
 								>
-									{companies.map((site, index) => (
-										<MenuItem key={index} value={site.name}>
-											{site.name}
+									{companies.map((company, index) => (
+										<MenuItem key={index} value={company.name}>
+											{company.name}
 										</MenuItem>
 									))}
 								</Select>
@@ -130,7 +179,7 @@ const MyComponent: React.FC = () => {
 							<FormControl sx={{ width: "20rem" }}>
 								<InputLabel
 									id="demo-simple-select-label"
-									{...{ disabled: selectedCompany != "" ? false : true }}
+									{...{ disabled: fiscalYears.length != 0 ? false : true }}
 								>
 									Fiscal Year
 								</InputLabel>
@@ -140,41 +189,51 @@ const MyComponent: React.FC = () => {
 									// value={age}
 									label="Fiscal Year"
 									autoWidth
-									{...{ disabled: selectedCompany != "" ? false : true }}
-									// onChange={handleChange}
+									{...{ disabled: fiscalYears.length != 0 ? false : true }}
+									onChange={handleFiscalYearChange}
 								>
-									<MenuItem value="Google">Aerele</MenuItem>
-									<MenuItem value="FierFox">SD</MenuItem>
+									{fiscalYears.map((fy, index) => (
+										<MenuItem key={index} value={fy.name}>
+											{fy.name}
+										</MenuItem>
+									))}
 								</Select>
 							</FormControl>
 						</Grid>
 						<Grid sx={{ paddingLeft: "1rem", paddingTop: "1rem" }}>
-							{/* <TextField id="outlined-basic" label="From Date" variant="outlined" sx={{ width: '120px' }} /> */}
-							<CustomTextField
-								id="date"
-								type="date"
-								label="From Date"
-								variant="outlined"
-								fullWidth
-								InputLabelProps={{
-									shrink: true,
-								}}
-								{...{ disabled: selectedFiscalYear != "" ? false : true }}
-							/>
+							<FormControl sx={{ width: "20rem" }}>
+								<LocalizationProvider dateAdapter={AdapterDayjs}>
+									<DatePicker
+										label="From Date"
+										value={selectedFromDate}
+										onChange={(date) =>
+											setSelectedFromDate(dayjs(date).format("YYYY-MM-DD"))
+										}
+										renderInput={(params) => {
+											return <TextField {...params} error={false} />;
+										}}
+										{...{ disabled: selectedFiscalYear === "" ? true : false }}
+									/>
+								</LocalizationProvider>
+							</FormControl>
 						</Grid>
 						<Grid sx={{ paddingLeft: "1rem", paddingTop: "1rem" }}>
-							{/* <TextField id="outlined-basic" label="To Date" variant="outlined" sx={{ width: '120px' }} /> */}
-							<CustomTextField
-								id="date"
-								type="date"
-								label="To Date"
-								variant="outlined"
-								fullWidth
-								InputLabelProps={{
-									shrink: true,
-								}}
-								{...{ disabled: selectedFiscalYear != "" ? false : true }}
-							/>
+							<FormControl sx={{ width: "20rem" }}>
+								<LocalizationProvider dateAdapter={AdapterDayjs}>
+									<DatePicker
+										label="To Date"
+										value={selectedToDate}
+										onChange={(date) =>
+											setSelectedToDate(dayjs(date).format("YYYY-MM-DD"))
+										}
+										renderInput={(params) => {
+											return <TextField {...params} error={false} />;
+										}}
+										{...{ disabled: selectedFiscalYear === "" ? true : false }}
+									/>
+								</LocalizationProvider>
+							</FormControl>
+							-
 						</Grid>
 					</Grid>
 				</Box>
@@ -189,7 +248,7 @@ const MyComponent: React.FC = () => {
 						sx={{ paddingLeft: "1rem", paddingTop: "1rem" }}
 					>
 						<Grid sx={{ paddingLeft: "3rem", paddingTop: "1rem" }}>
-							<Button variant="contained">
+							<Button variant="contained" onClick={()=>fetchCount(selectedSite, selectedCompany, selectedFiscalYear, selectedFromDate, selectedToDate)}>
 								<span>Fetch</span>
 								<ArrowForwardIosIcon
 									sx={{ paddingLeft: "0.1rem", fontSize: "small" }}
