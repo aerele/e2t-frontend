@@ -6,7 +6,6 @@ import {
   Avatar,
   Typography,
   Divider,
-  Button,
   IconButton,
 } from '@mui/material';
 import * as dropdownData from './data';
@@ -14,10 +13,15 @@ import * as dropdownData from './data';
 import { IconMail } from '@tabler/icons-react';
 import { Stack } from '@mui/system';
 import Image from 'next/image';
+import { AppState } from '@/store/store';
+import { useSelector } from '@/store/hooks';
+
 
 
 const Profile = () => {
   const [anchorEl2, setAnchorEl2] = useState(null);
+  const userProfile = useSelector((state: AppState) => state.userProfileReducer);
+
   const handleClick2 = (event: any) => {
     setAnchorEl2(event.currentTarget);
   };
@@ -41,7 +45,7 @@ const Profile = () => {
         onClick={handleClick2}
       >
         <Avatar
-          src={"/images/profile/user-1.jpg"}
+          src={userProfile.image}
           alt={'ProfileImg'}
           sx={{
             width: 35,
@@ -69,14 +73,14 @@ const Profile = () => {
       >
         <Typography variant="h5">User Profile</Typography>
         <Stack direction="row" py={3} spacing={2} alignItems="center">
-        <Avatar src={"/images/profile/user-1.jpg"} alt={"ProfileImg"} sx={{ width: 95, height: 95 }} />
+        <Avatar src={userProfile.image} alt={userProfile.fullname} sx={{ width: 95, height: 95 }} />
           <Box>
             <Typography variant="subtitle2" color="textPrimary" fontWeight={600}>
-              Mathew Anderson
+              {userProfile.fullname}
             </Typography>
-            <Typography variant="subtitle2" color="textSecondary">
+            {/* <Typography variant="subtitle2" color="textSecondary">
               Designer
-            </Typography>
+            </Typography> */}
             <Typography
               variant="subtitle2"
               color="textSecondary"
@@ -85,7 +89,7 @@ const Profile = () => {
               gap={1}
             >
               <IconMail width={15} height={15} />
-              info@modernize.com
+              {userProfile.email}
             </Typography>
           </Box>
         </Stack>

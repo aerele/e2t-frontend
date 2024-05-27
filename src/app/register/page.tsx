@@ -15,28 +15,30 @@ export default function Register() {
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
 	const [password, setPassword] = useState('')
+  const [mobileno, setMobileno] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
   const [isSubmitted, setisSubmitted] = useState(false)
-  const { call: signup } = useFrappePostCall('e2t_backend.authentication.authenticate.sign_up')
+  const { call: signup } = useFrappePostCall('e2t_backend.api.authenticate.sign_up')
   const router = useRouter();
-    
+
   useEffect(() => {{
     if (isSubmitted){
       if (password !== confirmPassword) {
         toast.error("Passwords do not match");
         setisSubmitted(false);
         return;
-      }  
+      }
       signup({
         email: email,
         full_name: name,
-        password: password
+        password: password,
+        mobileno: mobileno,
       }).then((res) => {
         if(res && res.message){
           if (res.message.status){
             toast.success(res.message.msg)
             setisSubmitted(!isSubmitted)
-            router.push('/login')         
+            router.push('/login')
            }
         }
       }).catch((e) => {
@@ -151,10 +153,12 @@ export default function Register() {
             name={name}
             email={email}
             password={password}
+            mobileno={mobileno}
             confirmPassword={confirmPassword}
             setName={setName}
             setEmail={setEmail}
             setPassword={setPassword}
+            setMobileno={setMobileno}
             setConfirmPassword={setConfirmPassword}
             submit={onSubmit}
           />

@@ -1,248 +1,246 @@
 "use client";
-import React, { useState } from 'react';
-import { Button, Box, Grid, Typography, Snackbar, Alert, IconButton } from '@mui/material';
-import CustomTextField from '../theme-elements/CustomTextField';
-import CustomFormLabel from '../theme-elements/CustomFormLabel';
-import ParentCard from '../../shared/ParentCard';
-import DoneIcon from '@mui/icons-material/Done';
-import ClearIcon from '@mui/icons-material/Clear';
-import CloseIcon from '@mui/icons-material/Close';
-import { useFrappePostCall } from 'frappe-react-sdk';
-import { useRouter } from 'next/navigation';
-
+import ClearIcon from "@mui/icons-material/Clear";
+import DoneIcon from "@mui/icons-material/Done";
+import {
+	Box,
+	Button,
+	Grid,
+	Typography
+} from "@mui/material";
+import CircularProgress from "@mui/material/CircularProgress";
+import { useFrappeGetCall, useFrappePostCall } from "frappe-react-sdk";
+import React, { FC, useState } from "react";
+import { Toaster, toast } from "sonner";
+import ParentCard from "../../shared/ParentCard";
+import CustomFormLabel from "../theme-elements/CustomFormLabel";
+import CustomTextField from "../theme-elements/CustomTextField";
 
 interface FormData {
-  url: string;
-  email: string;
-  password: string;
+	url: string;
+	email: string;
+	password: string;
 }
 interface AddSiteProps {
-  handleClose: () => void;
-} 
+	handleClose: () => void;
+}
 
+interface ValidateionTypeMap {
+	0: FC<any>;
+	1: FC<any>;
+	2: FC<any>;
+}
+const ClearIconComponent: FC<any> = () => <ClearIcon color="error" />;
+const DoneIconComponent: FC<any> = () => <DoneIcon color="success" />;
+const CircularProgressComponent: FC<any> = () => (
+  <CircularProgress color="primary" size="1rem" />
+);
 const AddSite: React.FC<AddSiteProps> = ({ handleClose }) => {
-  const [formData, setFormData] = useState<FormData>({
-    url: '',
-    email: '',
-    password: '',
-  });
+	const [formData, setFormData] = useState<FormData>({
+		url: "",
+		email: "",
+		password: "",
+	});
 
-  const [isValidated, setIsValidated] = useState<boolean>(false);
-  const [data, setData] = useState<{ [key: string]: number }>({});
-  const [error, setError] = useState<string | null>(null);
-  const [snackbarOpen1, setSnackbarOpen1] = useState<boolean>(false);
-  const [snackbarOpen2, setSnackbarOpen2] = useState<boolean>(false);
-  const [snackbarOpen3, setSnackbarOpen3] = useState<boolean>(false);
+	const [isValidated, setIsValidated] = useState<boolean>(false);
+	const [data, setData] = useState<{ [key: string]: number }>({});
 
-  const { call: validateUrl } = useFrappePostCall('e2t_backend.api.validate_url');
-  const { call: addSite } = useFrappePostCall('e2t_backend.api.add_site');
+	const { call: validateUrl } = useFrappePostCall(
+		"e2t_backend.api.site_details.validate_url"
+	);
+	const { call: addSite } = useFrappePostCall(
+		"e2t_backend.api.site_details.add_site"
+	);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { id, value } = e.target;
-    setFormData((prevFormData) => ({
-      ...prevFormData,
-      [id]: value
-    }));
-  };
+	const { data: exportingVouchers } = useFrappeGetCall(
+		"e2t_backend.api.site_details.get_exporting_vouchers"
+	);
 
-  const handleValidate = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setError(null);
-    try {
-      const response = await validateUrl({ value: JSON.stringify(formData) });
-      console.log('Validation Response:', response.message);
-      
-      if (response.message === 'Login Failed') {
-        setError('Login Failed');
-        setIsValidated(false);
-        setSnackbarOpen1(true);
-      } else {
-        setData(response.message);
-        setIsValidated(true);
-        if (Object.values(response.message).some(val => val === 0)) {
-          setSnackbarOpen3(true);
-        }
-      }
-    } catch (error) {
-      console.error('Validation Error:', error);
-      setError('An unexpected error occurred.');
-      setSnackbarOpen1(true);
-    }
-  };
+	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+		const { id, value } = e.target;
+		setFormData((prevFormData) => ({
+			...prevFormData,
+			[id]: value,
+		}));
+	};
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (Object.values(data).every(val => val === 1)) {
-      console.log('Form data:', formData);
-      addSite({ data: JSON.stringify(formData) });
-      setSnackbarOpen2(true);
-      handleClose();
-    }
-  };
+	const handleValidate = async (e: React.FormEvent) => {
+		e.preventDefault();
+		try {
+			setData(exportingVouchers.message);
 
-  const handleSnackbarClose1 = () => {
-    setSnackbarOpen1(false);
-  };
-  const handleSnackbarClose2 = () => {
-    setSnackbarOpen2(false);
-  };
-  const handleSnackbarClose3 = () => {
-    setSnackbarOpen3(false);
-  };
+			validateUrl({ value: JSON.stringify(formData) }).then((response) => {
+				if (response.message === "Login Failed") {
+					toast.error("Login Failed");
+					setIsValidated(false);
+				} else {
+					setData(response.message);
+					setIsValidated(true);
+					if (Object.values(response.message).some((val) => val === 0)) {
+						toast.error("Restrictions can be seen for some Documents");
+					}
+				}
+			});
+		} catch (error) {
+			toast.error("An unexpected error occurred.");
+		}
+	};
 
-  const checkValidationStatus = () => {
-    if (Object.keys(data).length === 0) {
-      return 'no-data';
-    }
-    if (Object.values(data).some(value => value === 0)) {
-      return 'invalid';
-    }
-    if (Object.values(data).every(value => value === 1)) {
-      return 'valid';
-    }
-    return 'partial';
-  };
+	const handleSubmit = (e: React.FormEvent) => {
+		e.preventDefault();
+		if (Object.values(data).every((val) => val === 1)) {
+			addSite({ data: JSON.stringify(formData) }).then(()=>{
 
-  const validationStatus = checkValidationStatus();
+				toast.success("Site Added Successfully");
+			}).catch(()=>{
+				toast.error("Something went wrong, please try again!")
+			});
+		}
+	};
+	const checkValidationStatus = () => {
+		if (Object.keys(data).length === 0) {
+			return "no-data";
+		}
+		if (Object.values(data).some((value) => value === 0)) {
+			return "invalid";
+		}
+		if (Object.values(data).every((value) => value === 1)) {
+			return "valid";
+		}
+		return "partial";
+	};
 
-  const entries = Object.entries(data);
-  const firstHalf = entries.slice(0, Math.ceil(entries.length / 2));
-  const secondHalf = entries.slice(Math.ceil(entries.length / 2));
+	const validationStatus = checkValidationStatus();
 
-  return (
-    <Box sx={{ width: '30rem' }}>
-      <Grid>
-        <Grid item xs={12} sm={12} md={20}>
-          <ParentCard title="">
-            <form onSubmit={handleSubmit}>
-              <CustomFormLabel
-                sx={{
-                  mt: 0,
-                }}
-                htmlFor="url"
-              >
-                Url
-              </CustomFormLabel>
-              <CustomTextField
-                id="url"
-                variant="outlined"
-                defaultValue=""
-                fullWidth
-                value={formData.url}
-                onChange={handleChange}
-              />
-              <CustomFormLabel htmlFor="email">Email</CustomFormLabel>
-              <CustomTextField
-                id="email"
-                type="text"
-                variant="outlined"
-                fullWidth
-                value={formData.email}
-                onChange={handleChange}
-              />
-              <CustomFormLabel htmlFor="password">Password</CustomFormLabel>
-              <CustomTextField
-                id="password"
-                type="password"
-                autoComplete="current-password"
-                variant="outlined"
-                fullWidth
-                value={formData.password}
-                onChange={handleChange}
-              />
-              {Object.keys(data).length !== 0 ? 
-              <>
-                <CustomFormLabel htmlFor="permission">Permission</CustomFormLabel>
-                <Box>
-                  {entries.length !== 0 ? (
-                    <Grid container spacing={2}>
-                      <Grid item xs={6}>
-                        {firstHalf.map(([key, value]) => (
-                          <Box key={key} sx={{ display: 'flex', alignItems: 'center' }}>
-                            {value === 1 ? <DoneIcon color='success' /> : <ClearIcon color='error' />}
-                            <Typography style={{ paddingLeft: "2%" }}>{key}</Typography>
-                          </Box>
-                        ))}
-                      </Grid>
-                      <Grid item xs={6}>
-                        {secondHalf.map(([key, value]) => (
-                          <Box key={key} sx={{ display: 'flex', alignItems: 'center' }}>
-                            {value === 1 ? <DoneIcon color='success' /> : <ClearIcon color='error' />}
-                            <Typography style={{ paddingLeft: "2%" }}>{key}</Typography>
-                          </Box>
-                        ))}
-                      </Grid>
-                    </Grid>
-                  ) : (
-                    <Typography style={{ fontWeight: 'semibold', fontSize: '10px', marginLeft: '25%', color: 'gray', marginTop: '10%' }}>
-                      Fill the fields to Show the PERMISSIONS
-                    </Typography>
-                  )}
-                </Box>
-              </> : null
-              }
-              <div>
-                {validationStatus === 'valid' ? (
-                  <Button color="primary" variant="contained" type="submit" sx={{ mt: 2, width: '100%' }}>
-                    Submit
-                  </Button>
-                ) : (
-                  <Button color="primary" variant="contained" onClick={handleValidate} sx={{ mt: 2, width: '100%' }}>
-                    Validate
-                  </Button>
-                )}
-              </div>
-            </form>
-          </ParentCard>
-        </Grid>
-      </Grid>
-      <Snackbar
-        open={snackbarOpen1}
-        autoHideDuration={6000}
-        onClose={handleSnackbarClose1}
-        anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-        action={
-          <IconButton size="small" aria-label="close" color="inherit" onClick={handleSnackbarClose1}>
-            <CloseIcon fontSize="small" />
-          </IconButton>
-        }
-      >
-          <Alert onClose={handleSnackbarClose1} severity="error" sx={{ width: '100%' }}>
-            {error}
-          </Alert>
-      </Snackbar>
-      <Snackbar
-        open={snackbarOpen3}
-        autoHideDuration={6000}
-        onClose={handleSnackbarClose3}
-        anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-        action={
-          <IconButton size="small" aria-label="close" color="inherit" onClick={handleSnackbarClose3}>
-            <CloseIcon fontSize="small" />
-          </IconButton>
-        }
-      >
-          <Alert onClose={handleSnackbarClose3} severity="error" sx={{ width: '100%' }}>
-            Restrictions can be seen for some Documents
-          </Alert>
-      </Snackbar>
-      <Snackbar
-        open={snackbarOpen2}
-        autoHideDuration={6000}
-        onClose={handleSnackbarClose2}
-        anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-        action={
-          <IconButton size="small" aria-label="close" color="inherit" onClick={handleSnackbarClose2}>
-            <CloseIcon fontSize="small" />
-          </IconButton>
-        }
-      >
-          <Alert onClose={handleSnackbarClose2} severity="success" sx={{ width: '100%' }}>
-            Site Added Successfully!
-          </Alert>
-      </Snackbar>
-    </Box>
-  );
+	const entries = Object.entries(data);
+	const firstHalf = entries.slice(0, Math.ceil(entries.length / 2));
+	const secondHalf = entries.slice(Math.ceil(entries.length / 2));
+
+	const validation_map: ValidateionTypeMap = {
+		0: ClearIconComponent,
+		1: DoneIconComponent,
+		2: CircularProgressComponent,
+	  };
+
+	return (
+		<Box sx={{ width: "30rem" }}>
+			<Toaster richColors></Toaster>
+			<Grid>
+				<Grid item xs={12} sm={12} md={20}>
+					<ParentCard title="">
+						<form onSubmit={handleSubmit}>
+							<CustomFormLabel
+								sx={{
+									mt: 0,
+								}}
+								htmlFor="url"
+							>
+								Url
+							</CustomFormLabel>
+							<CustomTextField
+								id="url"
+								variant="outlined"
+								defaultValue=""
+								fullWidth
+								value={formData.url}
+								onChange={handleChange}
+							/>
+							<CustomFormLabel htmlFor="email">Email</CustomFormLabel>
+							<CustomTextField
+								id="email"
+								type="text"
+								variant="outlined"
+								fullWidth
+								value={formData.email}
+								onChange={handleChange}
+							/>
+							<CustomFormLabel htmlFor="password">Password</CustomFormLabel>
+							<CustomTextField
+								id="password"
+								type="password"
+								autoComplete="current-password"
+								variant="outlined"
+								fullWidth
+								value={formData.password}
+								onChange={handleChange}
+							/>
+							{Object.keys(data).length !== 0 ? (
+								<>
+									<CustomFormLabel htmlFor="permission">
+										Permission
+									</CustomFormLabel>
+									<Box>
+										{entries.length !== 0 ? (
+											<Grid container spacing={2}>
+												<Grid item xs={6}>
+													{firstHalf.map(([key, value]: [string, Number]) => (
+														<Box
+															key={key}
+															sx={{ display: "flex", alignItems: "center" }}
+														>
+															{validation_map[value]}
+															<Typography style={{ paddingLeft: "2%" }}>
+																{key}
+															</Typography>
+														</Box>
+													))}
+												</Grid>
+												<Grid item xs={6}>
+													{secondHalf.map(([key, value]: [string, Number]) => (
+														<Box
+															key={key}
+															sx={{ display: "flex", alignItems: "center" }}
+														>
+															{validation_map[value]}
+															<Typography style={{ paddingLeft: "2%" }}>
+																{key}
+															</Typography>
+														</Box>
+													))}
+												</Grid>
+											</Grid>
+										) : (
+											<Typography
+												style={{
+													fontWeight: "semibold",
+													fontSize: "10px",
+													marginLeft: "25%",
+													color: "gray",
+													marginTop: "10%",
+												}}
+											>
+												Fill the fields to Show the PERMISSIONS
+											</Typography>
+										)}
+									</Box>
+								</>
+							) : null}
+							<div>
+								{validationStatus === "valid" ? (
+									<Button
+										color="primary"
+										variant="contained"
+										type="submit"
+										sx={{ mt: 2, width: "100%" }}
+									>
+										Submit
+									</Button>
+								) : (
+									<Button
+										color="primary"
+										variant="contained"
+										onClick={handleValidate}
+										sx={{ mt: 2, width: "100%" }}
+									>
+										Validate
+									</Button>
+								)}
+							</div>
+						</form>
+					</ParentCard>
+				</Grid>
+			</Grid>
+		</Box>
+	);
 };
 
 export default AddSite;
