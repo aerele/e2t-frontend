@@ -278,10 +278,12 @@ const ProductTableList = () => {
 		}
 	}, [data]);
 
-	const handleDelete = async (siteId: any) => {
+	const handleDelete = (siteId: any) => {
 		try {
-			await deleteDoc("Site Details", siteId);
-			await refetch_data();
+			deleteDoc("Site Details", siteId)
+				.then(() => {
+					return refetch_data();
+				})
 		} catch (error) {
 			console.error("Error deleting site:", error);
 		}
