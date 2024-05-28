@@ -19,7 +19,7 @@ const AuthResetPassword = ({
         <CustomFormLabel htmlFor="new-password">New Password</CustomFormLabel>
         <CustomTextField id="new-password" variant="outlined" fullWidth value={new_password} onChange={(e:any)=>{setNewPassword(e.target.value)}}/>
         <CustomFormLabel htmlFor="confirm-password">Confirm Password</CustomFormLabel>
-        <CustomTextField id="confirm-password" variant="outlined" fullWidth value={confirm_password} onChange={(e:any)=>{setConfirmPassword(e.target.value)}}/>
+        <CustomTextField id="confirm-password" type="password" variant="outlined" fullWidth value={confirm_password} onChange={(e:any)=>{setConfirmPassword(e.target.value)}}/>
 
         <Button
           color="primary"

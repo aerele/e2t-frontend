@@ -25,11 +25,15 @@ interface AddSiteProps {
 }
 
 interface ValidateionTypeMap {
-	0: FC;
-	1: FC;
-	2: FC;
+	0: FC<any>;
+	1: FC<any>;
+	2: FC<any>;
 }
-
+const ClearIconComponent: FC<any> = () => <ClearIcon color="error" />;
+const DoneIconComponent: FC<any> = () => <DoneIcon color="success" />;
+const CircularProgressComponent: FC<any> = () => (
+  <CircularProgress color="primary" size="1rem" />
+);
 const AddSite: React.FC<AddSiteProps> = ({ handleClose }) => {
 	const [formData, setFormData] = useState<FormData>({
 		url: "",
@@ -84,7 +88,6 @@ const AddSite: React.FC<AddSiteProps> = ({ handleClose }) => {
 	const handleSubmit = (e: React.FormEvent) => {
 		e.preventDefault();
 		if (Object.values(data).every((val) => val === 1)) {
-			console.log("Form data:", formData);
 			addSite({ data: JSON.stringify(formData) }).then(()=>{
 
 				toast.success("Site Added Successfully");
@@ -114,15 +117,10 @@ const AddSite: React.FC<AddSiteProps> = ({ handleClose }) => {
 	const secondHalf = entries.slice(Math.ceil(entries.length / 2));
 
 	const validation_map: ValidateionTypeMap = {
-		0: <ClearIcon color="error" />,
-		1: <DoneIcon color="success" />,
-		2: (
-			<CircularProgress
-				color="primary"
-				size="1rem"
-			/>
-		),
-	};
+		0: ClearIconComponent,
+		1: DoneIconComponent,
+		2: CircularProgressComponent,
+	  };
 
 	return (
 		<Box sx={{ width: "30rem" }}>

@@ -4,10 +4,14 @@ export interface registerType {
   subtext?: JSX.Element | JSX.Element[];
   name:string,
   email:string,
+  mobileno:string,
   password:string,
+  confirmPassword: string,
   setName: Function,
   setEmail: Function,
   setPassword: Function,
+  setMobileno: Function,
+  setConfirmPassword: Function,
   submit: Function
 }
 
