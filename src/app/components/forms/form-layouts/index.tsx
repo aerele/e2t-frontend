@@ -18,5 +18,5 @@ export {
   FbLeftIconForm,
   FbRightIconForm,
   FbInputVariants,
-  AddSite,
+  AddSite
 };
