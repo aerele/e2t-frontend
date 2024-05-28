@@ -130,7 +130,6 @@ const PaginationTable = ({ itemList = [] }: { itemList: itemListProps[] }) => {
 			title="Export to Tally"
 			description="this is Pagination Table"
 		>
-			<ParentCard title="Export to Tally">
 				<BlankCard>
 					<TableContainer>
 						<Table
@@ -208,7 +207,6 @@ const PaginationTable = ({ itemList = [] }: { itemList: itemListProps[] }) => {
 						</Table>
 					</TableContainer>
 				</BlankCard>
-			</ParentCard>
 		</PageContainer>
 	);
 };
