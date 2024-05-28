@@ -25,7 +25,7 @@ const Erp2tally: React.FC = () => {
 	const [fiscalYear, setFiscalYear] = useState<String>('');
 	const [fromDate, setFromDate] = useState<String>('');
 	const [toDate, setToDate] = useState<String>('');
-0
+	0
 	const { call: getVoucherList } = useFrappePostCall(
 		"e2t_backend.api.export_details.get_voucher_list"
 	);
@@ -48,7 +48,7 @@ const Erp2tally: React.FC = () => {
 	};
 
 	const steFetchedValue = () => {
-        setFetchValue(true);
+		setFetchValue(true);
 		if (!(site && company && fiscalYear && fromDate && toDate)) {
 			toast.error("Fill all filters to fetch data.");
 			return;
@@ -64,7 +64,7 @@ const Erp2tally: React.FC = () => {
 		})
 			.then((res) => setVoucherList(res.message))
 			.catch((err) => toast.error("Unable fetch date"));
-    };
+	};
 
 	return (
 		<div style={{ display: "flex", height: "100vh" }}>

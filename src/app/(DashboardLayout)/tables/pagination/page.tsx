@@ -108,7 +108,7 @@ function TablePaginationActions(props: TablePaginationActionsProps) {
 
 const PaginationTable = ({ itemList = [] }: { itemList: itemListProps[] }) => {
 	const [page, setPage] = React.useState(0);
-	const [rowsPerPage, setRowsPerPage] = React.useState(15);
+	const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
 	// Avoid a layout jump when reaching the last page with empty rows.
 	const emptyRows =
@@ -123,7 +123,6 @@ const PaginationTable = ({ itemList = [] }: { itemList: itemListProps[] }) => {
 		setPage(0);
 	};
 
-	// const {data} = useFrappeGetDocCount("Sales Order", filters?: {  } )
 
 	return (
 		<PageContainer
@@ -186,9 +185,9 @@ const PaginationTable = ({ itemList = [] }: { itemList: itemListProps[] }) => {
 								<TableRow>
 									<TablePagination
 										rowsPerPageOptions={[
+											5,
+											10,
 											15,
-											30,
-											50,
 											{ label: "All", value: -1 },
 										]}
 										colSpan={6}
