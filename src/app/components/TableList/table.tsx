@@ -35,9 +35,11 @@ import AddIcon from "@mui/icons-material/Add";
 import { AddSite } from "../forms/form-layouts";
 import Dialog from "@mui/material/Dialog";
 import DialogTitle from "@mui/material/DialogTitle";
-import { useFrappeGetDocList, useFrappeDeleteDoc } from "frappe-react-sdk";
+import { useFrappeGetDocList, useFrappeDeleteDoc, useFrappeDeleteCall, useFrappePostCall } from "frappe-react-sdk";
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { log } from "console";
+import { List } from "lodash";
 
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
 	if (b[orderBy] < a[orderBy]) {
@@ -121,7 +123,7 @@ function EnhancedTableHead(props: EnhancedTableProps) {
 						color="primary"
 						checked={rowCount > 0 && numSelected === rowCount}
 						onChange={onSelectAllClick}
-						inputProps={{ "aria-label": "select all desserts" }}
+						inputProps={{ "aria-label": "select all sites" }}
 					/>
 				</TableCell>
 				{headCells.map((headCell) => (
@@ -154,15 +156,34 @@ interface EnhancedTableToolbarProps {
 	numSelected: number;
 	handleSearch: React.ChangeEvent<HTMLInputElement> | any;
 	search: string;
+	selected_list: string[];
 }
 
 const EnhancedTableToolbar = (props: EnhancedTableToolbarProps) => {
-	const { numSelected, handleSearch, search } = props;
+	const { numSelected, handleSearch, search, selected_list } = props;
 	const [dialog, setDialog] = useState(false);
 	const handleClose = () => {
 		setDialog(false);
 		window.location.reload();
 	};
+	const { call: multiDelete } = useFrappeDeleteCall(
+		"e2t_backend.api.site_details.delete_multiple_sites"
+	);
+
+	const handleMultiDelete = (siteIdURL: string[]) => {
+		try {
+			console.log(siteIdURL);
+			
+			multiDelete({"data": siteIdURL}).then((r) => {
+				console.log(r);
+			}).catch((e) => {
+				console.log(e);
+			})	
+		}
+		catch (error) {
+            console.error("Error deleting site:", error);
+        }
+	}
 
 	return (
 		<Toolbar
@@ -218,7 +239,7 @@ const EnhancedTableToolbar = (props: EnhancedTableToolbarProps) => {
 			)}
 			{numSelected > 1 ? (
 				<Tooltip title="Delete">
-					<IconButton>
+					<IconButton onClick={() => handleMultiDelete(selected_list)}>
 						<IconTrash width="18" />
 					</IconButton>
 				</Tooltip>
@@ -326,7 +347,7 @@ const ProductTableList = () => {
 	// This is for select all the row
 	const handleSelectAllClick = (event: React.ChangeEvent<HTMLInputElement>) => {
 		if (event.target.checked) {
-			const newSelecteds = rows.map((n: any) => n.title);
+			const newSelecteds = rows.map((n: any) => n.url);
 			setSelected(newSelecteds);
 			return;
 		}
@@ -385,6 +406,7 @@ const ProductTableList = () => {
 					numSelected={selected.length}
 					search={search}
 					handleSearch={handleSearch}
+					selected_list={selected}
 				/>
 				<Paper
 					variant="outlined"
