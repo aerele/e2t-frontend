@@ -11,11 +11,11 @@ import React from "react";
 import { useSelector } from "react-redux";
 const MyApp = ({ children }: { children: React.ReactNode }) => {
 	const theme = ThemeSettings();
-	const customizer = useSelector((state: AppState) => state.customizer);
+	const customizer = useSelector((state: AppState) => state.customizer);	
 
 	return (
 		<>
-			<FrappeProvider url='http://localhost:8001' socketPort="9001">
+			<FrappeProvider url={process.env.NEXT_PUBLIC_SITE_URL} socketPort={process.env.NEXT_PUBLIC_SOCKET_PORT}>
 				<AppRouterCacheProvider options={{ enableCssLayer: true }}>
 					<ThemeProvider theme={theme}>
 						<RTL direction={customizer.activeDir}>

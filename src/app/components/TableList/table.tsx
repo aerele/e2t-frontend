@@ -35,9 +35,13 @@ import AddIcon from "@mui/icons-material/Add";
 import { AddSite } from "../forms/form-layouts";
 import Dialog from "@mui/material/Dialog";
 import DialogTitle from "@mui/material/DialogTitle";
-import { useFrappeGetDocList, useFrappeDeleteDoc } from "frappe-react-sdk";
+import { useFrappeGetDocList, useFrappeDeleteDoc, useFrappeDeleteCall, useFrappePostCall } from "frappe-react-sdk";
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { log } from "console";
+import { List } from "lodash";
+import { Toaster, toast } from "sonner";
+
 
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
 	if (b[orderBy] < a[orderBy]) {
@@ -90,25 +94,6 @@ const headCells: readonly HeadCell[] = [
 	{ id: "action", numeric: false, disablePadding: false, label: "Action" },
 ];
 
-const staticData = [
-	{
-		title: "Product 1",
-		category: "Category A",
-		created: "2024-05-01",
-		stock: true,
-		price: 100,
-		photo: "url_to_photo_1",
-	},
-	{
-		title: "Product 2",
-		category: "Category B",
-		created: "2024-05-05",
-		stock: false,
-		price: 150,
-		photo: "url_to_photo_2",
-	},
-];
-
 interface EnhancedTableProps {
 	numSelected: number;
 	onRequestSort: (event: React.MouseEvent<unknown>, property: any) => void;
@@ -140,7 +125,7 @@ function EnhancedTableHead(props: EnhancedTableProps) {
 						color="primary"
 						checked={rowCount > 0 && numSelected === rowCount}
 						onChange={onSelectAllClick}
-						inputProps={{ "aria-label": "select all desserts" }}
+						inputProps={{ "aria-label": "select all sites" }}
 					/>
 				</TableCell>
 				{headCells.map((headCell) => (
@@ -173,14 +158,37 @@ interface EnhancedTableToolbarProps {
 	numSelected: number;
 	handleSearch: React.ChangeEvent<HTMLInputElement> | any;
 	search: string;
+	selected_list: string[];
+	setSelected: React.dispatch<React.SetStateAction<string[]>>
+	refetch_data: () => void;
 }
 
 const EnhancedTableToolbar = (props: EnhancedTableToolbarProps) => {
-	const { numSelected, handleSearch, search } = props;
+	const { numSelected, handleSearch, search, selected_list, setSelected, refetch_data } = props;
 	const [dialog, setDialog] = useState(false);
 	const handleClose = () => {
 		setDialog(false);
+		refetch_data();
 	};
+	const { call: multiDelete } = useFrappeDeleteCall(
+		"e2t_backend.api.site_details.delete_multiple_sites"
+	);
+
+	const handleMultiDelete = (siteIdURL: string[]) => {
+		try {
+			multiDelete({ "data": JSON.stringify(siteIdURL) }).then(() => {
+				toast.success("Successfully Deleted");
+				setSelected([]);
+				refetch_data();
+			}).catch((e) => {
+				console.log(e);
+				toast.error("Error deleting sites");
+			});
+		} catch (error) {
+			console.error("Error deleting site:", error);
+			toast.error("Error deleting sites");
+		}
+	}
 
 	return (
 		<Toolbar
@@ -236,7 +244,7 @@ const EnhancedTableToolbar = (props: EnhancedTableToolbarProps) => {
 			)}
 			{numSelected > 1 ? (
 				<Tooltip title="Delete">
-					<IconButton>
+					<IconButton onClick={() => handleMultiDelete(selected_list)}>
 						<IconTrash width="18" />
 					</IconButton>
 				</Tooltip>
@@ -296,10 +304,12 @@ const ProductTableList = () => {
 		}
 	}, [data]);
 
-	const handleDelete = async (siteId: any) => {
+	const handleDelete = (siteId: any) => {
 		try {
-			deleteDoc("Site Details", siteId);
-			refetch_data();
+			deleteDoc("Site Details", siteId)
+				.then(() => {
+					return refetch_data();
+				})
 		} catch (error) {
 			console.error("Error deleting site:", error);
 		}
@@ -342,7 +352,7 @@ const ProductTableList = () => {
 	// This is for select all the row
 	const handleSelectAllClick = (event: React.ChangeEvent<HTMLInputElement>) => {
 		if (event.target.checked) {
-			const newSelecteds = rows.map((n: any) => n.title);
+			const newSelecteds = rows.map((n: any) => n.url);
 			setSelected(newSelecteds);
 			return;
 		}
@@ -401,6 +411,9 @@ const ProductTableList = () => {
 					numSelected={selected.length}
 					search={search}
 					handleSearch={handleSearch}
+					selected_list={selected}
+					refetch_data={refetch_data}
+					setSelected={setSelected}
 				/>
 				<Paper
 					variant="outlined"

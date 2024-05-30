@@ -32,7 +32,7 @@ interface ValidateionTypeMap {
 const ClearIconComponent: FC<any> = () => <ClearIcon color="error" />;
 const DoneIconComponent: FC<any> = () => <DoneIcon color="success" />;
 const CircularProgressComponent: FC<any> = () => (
-  <CircularProgress color="primary" size="1rem" />
+	<CircularProgress color="primary" size="1rem" />
 );
 const AddSite: React.FC<AddSiteProps> = ({ handleClose }) => {
 	const [formData, setFormData] = useState<FormData>({
@@ -88,10 +88,11 @@ const AddSite: React.FC<AddSiteProps> = ({ handleClose }) => {
 	const handleSubmit = (e: React.FormEvent) => {
 		e.preventDefault();
 		if (Object.values(data).every((val) => val === 1)) {
-			addSite({ data: JSON.stringify(formData) }).then(()=>{
+			addSite({ data: JSON.stringify(formData) }).then(() => {
 
 				toast.success("Site Added Successfully");
-			}).catch(()=>{
+				handleClose();
+			}).catch(() => {
 				toast.error("Something went wrong, please try again!")
 			});
 		}
@@ -119,7 +120,8 @@ const AddSite: React.FC<AddSiteProps> = ({ handleClose }) => {
 		0: ClearIconComponent,
 		1: DoneIconComponent,
 		2: CircularProgressComponent,
-	  };
+	};
+
 
 	return (
 		<Box sx={{ width: "30rem" }}>
@@ -144,6 +146,7 @@ const AddSite: React.FC<AddSiteProps> = ({ handleClose }) => {
 								value={formData.url}
 								onChange={handleChange}
 							/>
+							{/* <CircularProgress color="primary" size="1rem" /> */}
 							<CustomFormLabel htmlFor="email">Email</CustomFormLabel>
 							<CustomTextField
 								id="email"
@@ -177,7 +180,10 @@ const AddSite: React.FC<AddSiteProps> = ({ handleClose }) => {
 															key={key}
 															sx={{ display: "flex", alignItems: "center" }}
 														>
-															{validation_map[value]}
+															{/* {validation_map[value]} */}
+															{
+																value === 0 ? <ClearIcon color="error" /> : value === 1 ? <DoneIcon color="success" /> : <CircularProgress color="primary" size="1rem" />
+															}
 															<Typography style={{ paddingLeft: "2%" }}>
 																{key}
 															</Typography>
@@ -190,7 +196,10 @@ const AddSite: React.FC<AddSiteProps> = ({ handleClose }) => {
 															key={key}
 															sx={{ display: "flex", alignItems: "center" }}
 														>
-															{validation_map[value]}
+															{/* {validation_map[value]} */}
+															{
+																value === 0 ? <ClearIcon color="error" /> : value === 1 ? <DoneIcon color="success" /> : <CircularProgress color="primary" size="1rem" />
+															}
 															<Typography style={{ paddingLeft: "2%" }}>
 																{key}
 															</Typography>
@@ -216,6 +225,7 @@ const AddSite: React.FC<AddSiteProps> = ({ handleClose }) => {
 							) : null}
 							<div>
 								{validationStatus === "valid" ? (
+
 									<Button
 										color="primary"
 										variant="contained"
