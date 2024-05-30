@@ -40,6 +40,8 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { log } from "console";
 import { List } from "lodash";
+import { Toaster, toast } from "sonner";
+
 
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
 	if (b[orderBy] < a[orderBy]) {
@@ -166,7 +168,7 @@ const EnhancedTableToolbar = (props: EnhancedTableToolbarProps) => {
 	const [dialog, setDialog] = useState(false);
 	const handleClose = () => {
 		setDialog(false);
-		window.location.reload();
+		refetch_data();
 	};
 	const { call: multiDelete } = useFrappeDeleteCall(
 		"e2t_backend.api.site_details.delete_multiple_sites"
@@ -174,18 +176,18 @@ const EnhancedTableToolbar = (props: EnhancedTableToolbarProps) => {
 
 	const handleMultiDelete = (siteIdURL: string[]) => {
 		try {
-			console.log(siteIdURL);
-			
-			multiDelete({"data":JSON.stringify(siteIdURL)}).then((r) => {
-				setSelected([])
-				refetch_data()
+			multiDelete({ "data": JSON.stringify(siteIdURL) }).then(() => {
+				toast.success("Successfully Deleted");
+				setSelected([]);
+				refetch_data();
 			}).catch((e) => {
 				console.log(e);
-			})	
+				toast.error("Error deleting sites");
+			});
+		} catch (error) {
+			console.error("Error deleting site:", error);
+			toast.error("Error deleting sites");
 		}
-		catch (error) {
-            console.error("Error deleting site:", error);
-        }
 	}
 
 	return (
@@ -410,8 +412,8 @@ const ProductTableList = () => {
 					search={search}
 					handleSearch={handleSearch}
 					selected_list={selected}
-					refetch_data = {refetch_data}
-					setSelected = {setSelected}
+					refetch_data={refetch_data}
+					setSelected={setSelected}
 				/>
 				<Paper
 					variant="outlined"
