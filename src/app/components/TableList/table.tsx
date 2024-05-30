@@ -157,10 +157,12 @@ interface EnhancedTableToolbarProps {
 	handleSearch: React.ChangeEvent<HTMLInputElement> | any;
 	search: string;
 	selected_list: string[];
+	setSelected: React.dispatch<React.SetStateAction<string[]>>
+	refetch_data: () => void;
 }
 
 const EnhancedTableToolbar = (props: EnhancedTableToolbarProps) => {
-	const { numSelected, handleSearch, search, selected_list } = props;
+	const { numSelected, handleSearch, search, selected_list, setSelected, refetch_data } = props;
 	const [dialog, setDialog] = useState(false);
 	const handleClose = () => {
 		setDialog(false);
@@ -174,8 +176,9 @@ const EnhancedTableToolbar = (props: EnhancedTableToolbarProps) => {
 		try {
 			console.log(siteIdURL);
 			
-			multiDelete({"data": siteIdURL}).then((r) => {
-				console.log(r);
+			multiDelete({"data":JSON.stringify(siteIdURL)}).then((r) => {
+				setSelected([])
+				refetch_data()
 			}).catch((e) => {
 				console.log(e);
 			})	
@@ -407,6 +410,8 @@ const ProductTableList = () => {
 					search={search}
 					handleSearch={handleSearch}
 					selected_list={selected}
+					refetch_data = {refetch_data}
+					setSelected = {setSelected}
 				/>
 				<Paper
 					variant="outlined"
