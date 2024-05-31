@@ -1,8 +1,6 @@
 import * as React from "react";
 import { alpha, useTheme } from "@mui/material/styles";
-import { format } from "date-fns";
 import Box from "@mui/material/Box";
-import FormControlLabel from "@mui/material/FormControlLabel";
 import IconButton from "@mui/material/IconButton";
 import InputAdornment from "@mui/material/InputAdornment";
 import Paper from "@mui/material/Paper";
@@ -19,13 +17,10 @@ import Toolbar from "@mui/material/Toolbar";
 import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
 import { visuallyHidden } from "@mui/utils";
-import { useSelector, useDispatch } from "@/store/hooks";
+import { useDispatch } from "@/store/hooks";
 import { fetchProducts } from "@/store/apps/eCommerce/ECommerceSlice";
 import CustomCheckbox from "../forms/theme-elements/CustomCheckbox";
-import CustomSwitch from "../forms/theme-elements/CustomSwitch";
 import {
-	IconDotsVertical,
-	IconFilter,
 	IconSearch,
 	IconTrash,
 } from "@tabler/icons-react";
@@ -38,9 +33,7 @@ import DialogTitle from "@mui/material/DialogTitle";
 import { useFrappeGetDocList, useFrappeDeleteDoc, useFrappeDeleteCall, useFrappePostCall } from "frappe-react-sdk";
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { log } from "console";
-import { List } from "lodash";
-import { Toaster, toast } from "sonner";
+import { toast } from "sonner";
 
 
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
