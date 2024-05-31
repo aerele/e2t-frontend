@@ -586,6 +586,12 @@ const Menuitems = [
       },
       {
         id: uniqueId(),
+        title: 'E2tMapping',
+        icon: IconPoint,
+        href: '/tables/e2tmapping',
+      },
+      {
+        id: uniqueId(),
         title: 'Search',
         icon: IconPoint,
         href: '/tables/search',

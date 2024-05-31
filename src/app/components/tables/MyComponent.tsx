@@ -231,7 +231,7 @@ const MyComponent: React.FC<FetchCountProps> = ({ fetchCount }) => {
                       key={index}
                       value={fy.name}
                       sx={{
-                        width: "20rem",
+                        width: "11rem",
                       }}
                     >
                       {fy.name}
@@ -260,7 +260,7 @@ const MyComponent: React.FC<FetchCountProps> = ({ fetchCount }) => {
               </FormControl>
             </Grid>
             <Grid sx={{ paddingLeft: "1rem", paddingTop: "1rem" }}>
-              <FormControl sx={{ width: "12rem" }}>
+              <FormControl sx={{ width: "11rem" }}>
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                   <DatePicker
                     label="To Date"
