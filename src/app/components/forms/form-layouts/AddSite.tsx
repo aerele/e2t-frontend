@@ -144,6 +144,7 @@ const AddSite: React.FC<AddSiteProps> = ({ handleClose }) => {
 								value={formData.url}
 								onChange={handleChange}
 							/>
+							{/* <CircularProgress color="primary" size="1rem" /> */}
 							<CustomFormLabel htmlFor="email">Email</CustomFormLabel>
 							<CustomTextField
 								id="email"
@@ -177,7 +178,10 @@ const AddSite: React.FC<AddSiteProps> = ({ handleClose }) => {
 															key={key}
 															sx={{ display: "flex", alignItems: "center" }}
 														>
-															{validation_map[value]}
+															{/* {validation_map[value]} */}
+															{
+																value === 0 ? <ClearIcon color="error" /> : value === 1 ? <DoneIcon color="success" /> : <CircularProgress color="primary" size="1rem" />
+															}
 															<Typography style={{ paddingLeft: "2%" }}>
 																{key}
 															</Typography>
@@ -190,7 +194,10 @@ const AddSite: React.FC<AddSiteProps> = ({ handleClose }) => {
 															key={key}
 															sx={{ display: "flex", alignItems: "center" }}
 														>
-															{validation_map[value]}
+															{/* {validation_map[value]} */}
+															{
+																value === 0 ? <ClearIcon color="error" /> : value === 1 ? <DoneIcon color="success" /> : <CircularProgress color="primary" size="1rem" />
+															}
 															<Typography style={{ paddingLeft: "2%" }}>
 																{key}
 															</Typography>

@@ -3,13 +3,14 @@ import ImportExportIcon from "@mui/icons-material/ImportExport";
 import { Box, TextField } from "@mui/material";
 import Button from "@mui/material/Button";
 import { useFrappePostCall } from "frappe-react-sdk";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Toaster, toast } from "sonner";
 import Header from "../(DashboardLayout)/layout/horizontal/header/Header";
 import PaginationTable from "../(DashboardLayout)/tables/pagination/page";
 import Sidebar from "../../app/(DashboardLayout)/layout/vertical/sidebar/Sidebar";
 import MyComponent from "../components/tables/MyComponent";
 import AparentCard from "../components/shared/AparentCard";
+import { useRouter, useSearchParams } from 'next/navigation'
 
 interface itemListProps {
 	name: string;
@@ -25,7 +26,21 @@ const Erp2tally: React.FC = () => {
 	const [fiscalYear, setFiscalYear] = useState<String>('');
 	const [fromDate, setFromDate] = useState<String>('');
 	const [toDate, setToDate] = useState<String>('');
-0
+	const [passed_site, setPassedSite] = useState<String>('');
+	const [name, setName] = useState<String>('');
+
+	const router = useRouter()
+	const searchParams = useSearchParams()
+	useEffect(() => {
+		const siteParam = searchParams.get('site');
+		const nameParam = searchParams.get('name');
+		if (siteParam && nameParam) {
+		setPassedSite(siteParam);
+		setName(nameParam);
+		}
+	}, [searchParams]);
+
+
 	const { call: getVoucherList } = useFrappePostCall(
 		"e2t_backend.api.export_details.get_voucher_list"
 	);
@@ -67,16 +82,34 @@ const Erp2tally: React.FC = () => {
     };
 
 	return (
-		<div style={{ display: "flex", height: "100vh" }}>
+		<Box sx={{ display: "flex", height: "100vh" }}>
 			<Sidebar />
-			<div style={{ flex: 1, overflowY: "auto", paddingLeft: "2px" }}>
+			<Box sx={{ flex: 1, 
+				overflowY: "auto", 
+				paddingLeft: "2px",
+				"&::-webkit-scrollbar": {
+					width: "8px",
+				  },
+				  "&::-webkit-scrollbar-track": {
+					background: "transparent",
+				  },
+				  "&::-webkit-scrollbar-thumb": {
+					background: "rgba(0, 0, 0, 0)", 
+					borderRadius: "4px",
+				  },
+				  "&::-webkit-scrollbar-thumb:hover": {
+					background: "rgba(0, 0, 0, 0)",
+				  },
+			 }}>
 				<Header />
-				<AparentCard title="Erpnext to Tally" fetchCount={steFetchedValue}>
-
-					<MyComponent fetchCount={fetchVoucherCount} />
-					<Box sx={{ padding: "1rem" }}>
-						<PaginationTable itemList={voucherList} />
-					</Box>
+				<Box >
+					<AparentCard title="Export to Tally" fetchCount={steFetchedValue} >
+						<MyComponent fetchCount={fetchVoucherCount} passedSite={passed_site} passedName={name}/>
+						<Box sx={{ padding: "1rem"}}>
+							<PaginationTable itemList={voucherList}/>
+						</Box>
+					</AparentCard>
+				</Box>
 					<Box
 						sx={{ padding: "1rem", display: "flex", justifyContent: "flex-end" }}
 					>
@@ -96,7 +129,16 @@ const Erp2tally: React.FC = () => {
 							sx={{ marginRight: "1rem" }}
 							disabled
 						/>
-						<Button variant="contained" color="success" href="/vouchers">
+						<Button 
+							variant="contained" 
+							color="success" 
+							// href={`/matcher?site=${site}`}
+							onClick={() => router.push(`/matcher?site=${site}&company=${company}`)}
+							// href={{
+							// 	pathname: '/matcher/[site]',
+							// 	query: { site: site },
+							//   }}
+						>
 							<span>Export Data</span>
 							<ImportExportIcon
 								sx={{ paddingLeft: "0.1rem", fontSize: "large" }}
@@ -104,9 +146,9 @@ const Erp2tally: React.FC = () => {
 						</Button>
 					</Box>
 					<Toaster richColors></Toaster>
-				</AparentCard>
-			</div>
-		</div>
+				
+			</Box>
+		</Box>
 	);
 };
 
