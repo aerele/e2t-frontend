@@ -3,14 +3,14 @@ import ImportExportIcon from "@mui/icons-material/ImportExport";
 import { Box, TextField } from "@mui/material";
 import Button from "@mui/material/Button";
 import { useFrappePostCall } from "frappe-react-sdk";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Toaster, toast } from "sonner";
 import Header from "../(DashboardLayout)/layout/horizontal/header/Header";
 import PaginationTable from "../(DashboardLayout)/tables/pagination/page";
 import Sidebar from "../../app/(DashboardLayout)/layout/vertical/sidebar/Sidebar";
 import MyComponent from "../components/tables/MyComponent";
 import AparentCard from "../components/shared/AparentCard";
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 
 interface itemListProps {
 	name: string;
@@ -26,8 +26,20 @@ const Erp2tally: React.FC = () => {
 	const [fiscalYear, setFiscalYear] = useState<String>('');
 	const [fromDate, setFromDate] = useState<String>('');
 	const [toDate, setToDate] = useState<String>('');
+	const [passed_site, setPassedSite] = useState<String>('');
+	const [name, setName] = useState<String>('');
 
 	const router = useRouter()
+	const searchParams = useSearchParams()
+	useEffect(() => {
+		const siteParam = searchParams.get('site');
+		const nameParam = searchParams.get('name');
+		if (siteParam && nameParam) {
+		setPassedSite(siteParam);
+		setName(nameParam);
+		}
+	}, [searchParams]);
+
 
 	const { call: getVoucherList } = useFrappePostCall(
 		"e2t_backend.api.export_details.get_voucher_list"
@@ -92,7 +104,7 @@ const Erp2tally: React.FC = () => {
 				<Header />
 				<Box >
 					<AparentCard title="Export to Tally" fetchCount={steFetchedValue} >
-						<MyComponent fetchCount={fetchVoucherCount} />
+						<MyComponent fetchCount={fetchVoucherCount} passedSite={passed_site} passedName={name}/>
 						<Box sx={{ padding: "1rem"}}>
 							<PaginationTable itemList={voucherList}/>
 						</Box>

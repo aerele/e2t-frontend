@@ -40,9 +40,11 @@ interface FetchCountProps {
     fromDate: string,
     toDate: string
   ) => void;
+  passedSite: string;
+  passedName: string;
 }
 
-const MyComponent: React.FC<FetchCountProps> = ({ fetchCount }) => {
+const MyComponent: React.FC<FetchCountProps> = ({ fetchCount, passedSite, passedName }) => {
   const {
     data,
     error,
@@ -53,6 +55,7 @@ const MyComponent: React.FC<FetchCountProps> = ({ fetchCount }) => {
     fields: ["name", "domain as url", "email"],
     filters: [["disable", "=", 0]],
   });
+
   const [sites, setSites] = useState<siteType[]>([]);
   const [companies, setCompanies] = useState<companiesType[]>([]);
   const [fiscalYears, setFiscalYears] = useState<fiscalYearsType[]>([]);
@@ -77,18 +80,24 @@ const MyComponent: React.FC<FetchCountProps> = ({ fetchCount }) => {
       setSites(data);
     }
   }, [data]);
+  useEffect(() =>{
+    if(passedName){
+      setSelectedSite(passedName);
+    }
+  }, [passedName]);
 
   useEffect(() => {
-    if (selectedSite)
+    if (selectedSite){
       getCompany({
         site: selectedSite,
       })
-        .then((res) => {
+       .then((res) => {
           if (res.message) setCompanies(res.message);
         })
-        .catch((err) => {
+       .catch((err) => {
           toast.error(err.message);
         });
+    }
   }, [selectedSite]);
 
   useEffect(() => {
@@ -99,7 +108,6 @@ const MyComponent: React.FC<FetchCountProps> = ({ fetchCount }) => {
       })
         .then((res) => {
           if (res.message) setFiscalYears(res.message);
-          console.log(res.message);
         })
         .catch((err) => {
           toast.error(err.message);
@@ -121,7 +129,6 @@ const MyComponent: React.FC<FetchCountProps> = ({ fetchCount }) => {
       setMaxDate(selectedFY.year_end_date);
     }
   };
-
   const handleToDateChange = (date: Date | null) => {
     if (date) {
       const formattedDate = dayjs(date).format("YYYY-MM-DD");
@@ -160,26 +167,38 @@ const MyComponent: React.FC<FetchCountProps> = ({ fetchCount }) => {
           >
             <Grid sx={{ paddingLeft: "1rem", paddingTop: "1rem" }}>
               <FormControl sx={{ width: "11rem" }}>
-                <InputLabel id="site-select-label">Site</InputLabel>
-                <Select
-                  labelId="site-select-label"
-                  id="site-select"
-                  value={selectedSite}
-                  label="Site"
-                  onChange={handleSiteChange}
-                >
-                  {sites.map((site, index) => (
-                    <MenuItem
-                      key={index}
-                      value={site?.name}
-                      sx={{
-                        width: "11rem",
-                      }}
+                {
+                  passedSite ? 
+                  <TextField
+                    label="Site"
+                    value={passedSite}
+                    onChange={handleSiteChange}
+                    disabled
+                  />
+                  :
+                  <>
+                    <InputLabel id="site-select-label">Site</InputLabel>
+                    <Select
+                      labelId="site-select-label"
+                      id="site-select"
+                      value={selectedSite}
+                      label="Site"
+                      onChange={handleSiteChange}
                     >
-                      {`${site.url} (${site.email})`}
-                    </MenuItem>
-                  ))}
-                </Select>
+                      {sites.map((site, index) => (
+                        <MenuItem
+                          key={index}
+                          value={site?.name}
+                          sx={{
+                            width: "11rem",
+                          }}
+                        >
+                          {`${site.url} (${site.email})`}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </>
+                }
               </FormControl>
             </Grid>
             <Grid sx={{ paddingLeft: "1rem", paddingTop: "1rem" }}>

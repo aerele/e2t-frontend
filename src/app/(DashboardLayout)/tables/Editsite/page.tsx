@@ -14,9 +14,6 @@ import {
     MenuItem,
     SelectChangeEvent
 } from '@mui/material';
-import PageContainer from '@/app/components/container/PageContainer';
-import ParentCard from '@/app/components/shared/ParentCard';
-
 interface Column {
     id: 'erpnext_account' | 'tally_account';
     label: string;
@@ -71,7 +68,7 @@ interface FetchAccount {
     AccountList: { name: string }[];
 }
 
-const E2tmapping: React.FC<FetchAccount> = ({ AccountList }) => {
+const Editsite: React.FC<FetchAccount> = ({ AccountList }) => {
     const [accountMapping, setAccountMapping] = useState<AccountMapping>({});
     const [erpnext_accounts, setErpnextAccounts] = useState<string[]>([]);
     const [datalist, setDatalist] = useState<AccountMapping[]>([]);
@@ -91,18 +88,23 @@ const E2tmapping: React.FC<FetchAccount> = ({ AccountList }) => {
     };
 
     return (
-        <PageContainer title="ERPNext to Tally Mapper" description="this is ERPNext to Tally Mapper">
-            <ParentCard title="ERPNext to Tally Mapper">
+        <Box>
+            <Box
+                sx={{
+                    border:'1px solid #dadada',
+                }}
+            >
                 <Box sx={{
                     display: "flex",
                     justifyContent: "center",
                     alignItems: "center",
                     width: "100%",
+                    padding:'2rem'
                 }}>
                     <TableContainer
                         sx={{
                             maxHeight: 440,
-                            maxWidth: 600,
+                            maxWidth: '100%',
                             border: '1px solid #e7e7e7',
                             "&::-webkit-scrollbar": {
                                 width: "1px",
@@ -146,7 +148,7 @@ const E2tmapping: React.FC<FetchAccount> = ({ AccountList }) => {
                                                 {erpnext_account}
                                             </Typography>
                                         </TableCell>
-                                        <TableCell sx={{ alignContent: "center", alignItems: 'center', paddingLeft: "2rem" }}>
+                                        <TableCell sx={{ alignContent: "center", alignItems: 'center', paddingLeft: "12rem" }}>
                                             <Select
                                                 value={accountMapping[erpnext_account] || ""}
                                                 onChange={(event) => handleChange(event, erpnext_account)}
@@ -165,9 +167,9 @@ const E2tmapping: React.FC<FetchAccount> = ({ AccountList }) => {
                         </Table>
                     </TableContainer>
                 </Box>
-            </ParentCard>
-        </PageContainer>
+            </Box>
+        </Box>
     );
 };
 
-export default E2tmapping;
+export default Editsite;
